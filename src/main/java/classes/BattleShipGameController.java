@@ -19,6 +19,7 @@ public class BattleShipGameController {
     private int numShips;
     private int GRID_SIZE = 10;
     private int[] shipLengths = {5, 4, 3, 3, 2};
+
     private  int[][] grid; // La grille du jeu
     private Rectangle[][] gridRectangles; // Les rectangles de la grille
     private Random random;
@@ -33,6 +34,27 @@ public class BattleShipGameController {
     public BattleShipGameController() {
         grid = new int[gridWidth][gridHeight]; // Crée une grille de jeu vide
         random = new Random(); // Initialise le générateur de nombres aléatoires et valeurs de vérités
+        for (int shipLength : shipLengths) {
+            shipsPositions.add(new ArrayList<>());
+        }
+    }
+    /**
+     * Constructeur de la classe BattleShipGameController.
+     * Initialise le jeu de bataille navale avec les dimensions de la grille personnalisées,
+     * le nombre de bateaux et les longueurs de chaque bateau.
+     *
+     * @param gridWidth   La largeur de la grille de jeu.
+     * @param gridHeight  La hauteur de la grille de jeu.
+     * @param shipLengths Un tableau d'entiers représentant les longueurs de chaque bateau.
+     *                   La longueur d'un bateau est toujours comprise entre 1 et 6 cases.
+     */
+    public BattleShipGameController(int gridWidth, int gridHeight, int[] shipLengths) {
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        this.numShips = 6;
+        this.shipLengths = shipLengths;
+        grid = new int[gridWidth][gridHeight];
+        random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
         }
@@ -341,6 +363,9 @@ public class BattleShipGameController {
      */
     public void setGridRectangles(Rectangle[][] rectangles) {
         gridRectangles = rectangles;
+    }
+    public int[][] getGrid() {
+        return grid;
     }
 
 }

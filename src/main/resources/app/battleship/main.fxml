@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.text.Font?>
+
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.battleship.Controller" stylesheets="@styles.css">
     <top>
         <Label text="Bataille Navale" BorderPane.alignment="CENTER">
@@ -19,6 +18,16 @@
             <Button fx:id="loadGameButton" onAction="#loadGame" text="Charger Partie" />
             <Button fx:id="newAIGameButton" onAction="#startNewAIGame"  text="Mode IA"/>
             <Button fx:id="exitButton" onAction="#exit" prefHeight="25.0" prefWidth="90.0" text="Quitter" />
+
+            <HBox spacing="10">
+                <Label text="Nombre de colonnes :"/>
+                <TextField fx:id="columnsTextField" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Nombre de lignes :"/>
+                <TextField fx:id="rowsTextField" />
+            </HBox>
         </VBox>
     </center>
     <bottom>
@@ -28,4 +37,6 @@
             </font>
         </Label>
     </bottom>
+    <!-- Zone de combat -->
+    <Pane fx:id="combatPane" />
 </BorderPane>
