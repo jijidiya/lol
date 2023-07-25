@@ -1,0 +1,12 @@
+/* styles.css */
+.button {
+    -fx-min-width: 180px;
+    -fx-pref-width: 180px;
+    -fx-max-width: 180px;
+    -fx-min-height: 50px;
+    -fx-pref-height: 50px;
+    -fx-max-height: 50px;
+    -fx-background-color: #FF5733; /* Choisir la couleur vive que vous souhaitez */
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}

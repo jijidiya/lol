@@ -43,7 +43,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(3, 3, 2, true);
 
         // Définissez une position cible pour le test où il n'y a pas de bateau (miss)
-        String targetPosition = "2,2";
+        String targetPosition = "C2";
 
         // Appliquez le tir à la position cible
         gameController.fireAtTargetPosition(targetPosition);
@@ -61,7 +61,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(3, 3, 2, true);
 
         // Définissez une position cible en dehors de la grille pour le test
-        String targetPosition = "5,5";
+        String targetPosition = "E5";
 
         // Appliquez le tir à la position cible (en dehors de la grille)
         gameController.fireAtTargetPosition(targetPosition);
@@ -80,7 +80,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(3, 3, 2, true);
 
         // Définissez une position cible pour le test
-        String targetPosition = "2,2"; // Cible au milieu de la grille
+        String targetPosition = "C2"; // Cible au milieu de la grille
 
         // Obtenez les distances de Manhattan entre la position cible et les positions des bateaux
         List<Integer> distances = gameController.manhattanDistance(targetPosition);
