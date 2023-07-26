@@ -82,7 +82,7 @@ public class BattleShipGameController {
         }
     }
 
-    //PLACEMENT ALEATOIRE DES BATEAUX
+    //PLACEMENT ALÉATOIRE DES BATEAUX
     /**
      * Place les bateaux aléatoirement sur la grille du jeu.
      */
@@ -170,9 +170,16 @@ public class BattleShipGameController {
     // VISER UNE CIBLE DE LA GRILLE
     /**
      * Méthode de gestion pour le clic sur le bouton de tir.
+     *
+     * @return Le résultat du tir, qui peut être l'une des valeurs suivantes :
+     *           - "touché" si le tir a touché un bateau.
+     *           - "Vous avez déjà tiré ici !" si la position cible a déjà été tirée auparavant.
+     *           - "Dans l'eau, Plouf!!" si le tir est dans l'eau (aucun bateau n'a été touché).
+     *           - "Position cible en dehors de la grille !" si la position cible est en dehors de la grille de jeu.
+     *           - "Position cible invalide !" si la position cible n'est pas au bon format.
      */
-    public void fireAtTargetPosition(String targetPosition) {
-
+    public String fireAtTargetPosition(String targetPosition) {
+        String result;
         try {
             // Vérifier si la position cible est valide (lettre suivie d'un chiffre)
             if (isValidTargetPosition(targetPosition)) {
@@ -186,35 +193,42 @@ public class BattleShipGameController {
                         // Le tir a touché un bateau
                         grid[row][col] = -1; // Marquer le tir comme "touché"
                         updateGridButton(row, col, Color.RED); // Mettre à jour l'apparence du bouton avec une couleur spécifique
-                        System.out.println("Bateau touché ");
+                        System.out.println("Bateau touché");
+                        result = "touché";
                     } else if (grid[row][col] == -1) {
                         System.out.println("Vous avez déjà tiré ici !");
+                        result ="Vous avez déjà tiré ici !";
                     } else {
                         // Le tir est dans l'eau (aucun bateau n'a été touché)
                         grid[row][col] = -1; // Marquer le tir comme "dans l'eau"
                         updateGridButton(row, col, Color.BLUE);
                         System.out.println("Dans l'eau, Plouf!!");
+                        result = "Dans l'eau, Plouf!!";
                     }
 
                     // Vérifier si tous les bateaux ont été coulés
                     if (checkAllShipsSunk()) {
                         System.out.println("Tous les bateaux ont été coulés. Partie terminée !");
-                        // À compléter : Gérer la fin du jeu ici
+                        // TODO : Gérer la fin du jeu ici
                     }
+                    return result;
                 } else {
                     System.out.println("Position cible en dehors de la grille !");
+                    return "Position cible en dehors de la grille !";
                 }
             } else {
                 System.out.println("Position cible invalide !");
+                return "Position cible invalide !";
             }
         } catch (NumberFormatException e) {
             System.out.println("Position cible invalide !");
+            return "Position cible invalide !";
         }
     }
     /**
      * Vérifie si la position cible est au format attendu.
      *
-     * @param targetPosition La chaîne représentant la position cible, au format lettre suivie d'un chiffre (ex: "A1", "D5", etc.).
+     * @param targetPosition La chaîne représentant la position cible, au format lettre suivie d'un chiffre.
      * @return true si la position cible est au format attendu, sinon false.
      */
     public boolean isValidTargetPosition(String targetPosition) {
@@ -260,7 +274,7 @@ public class BattleShipGameController {
     /**
      * Calcule les distances de Manhattan entre une position cible et toutes les positions des bateaux de la flotte.
      *
-     * @param targetPosition La position cible sous forme de code lettre-numéro (ex: "A1", "D5", etc.).
+     * @param targetPosition La position cible sous forme de code lettre-numéro.
      * @return Une liste des distances de Manhattan entre la position cible et toutes les positions des bateaux.
      * @throws IllegalArgumentException Si la position cible est invalide.
      */
@@ -295,25 +309,33 @@ public class BattleShipGameController {
      * @param filePath Le chemin vers le fichier texte à charger.
      * @throws IOException En cas d'erreur lors de la lecture du fichier.
      */
-    public void loadGameFromFile(String filePath) {
+    public int[][] loadGameFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            List<String> lines = new ArrayList<>();
             String line;
-            int row = 0;
-            int expectedLength = -1;
+            int colCount = -1;
 
+            // Compter le nombre de lignes et déterminer la longueur attendue pour les colonnes
             while ((line = reader.readLine()) != null) {
-                if (expectedLength == -1) {
-                    // Première ligne, déterminer la longueur attendue
-                    expectedLength = line.length();
+                lines.add(line);
+                if (colCount == -1) {
+                    colCount = line.length(); // Première ligne, déterminer la longueur attendue
                 } else {
                     // Vérifier si la longueur de la ligne est différente de la longueur attendue
-                    if (line.length() != expectedLength) {
+                    if (line.length() != colCount) {
                         throw new IllegalArgumentException("Le format du fichier n'est pas valide. Toutes les lignes doivent avoir la même longueur.");
                     }
                 }
+            }
 
-                // Traiter chaque caractère de la ligne
-                for (int col = 0; col < line.length(); col++) {
+            int rowCount = lines.size();
+
+            // Initialiser le tableau une fois que les dimensions sont connues
+            int[][] grid = new int[rowCount][colCount];
+
+            for (int row = 0; row < rowCount; row++) {
+                line = lines.get(row);
+                for (int col = 0; col < colCount; col++) {
                     char cell = line.charAt(col);
                     if (cell == '.') {
                         grid[row][col] = 0; // Case vide
@@ -323,27 +345,28 @@ public class BattleShipGameController {
                         throw new IllegalArgumentException("Le format du fichier n'est pas valide. Caractère inconnu : " + cell);
                     }
                 }
-
-                // Passer à la ligne suivante de la grille
-                row++;
             }
 
-            if (expectedLength == -1) {
+            if (rowCount == 0) {
                 throw new IllegalArgumentException("Le fichier est vide. Aucune grille n'a été trouvée.");
             }
+            return grid;
+
+            // Utilisez le tableau 'grid' comme vous en avez besoin à partir de maintenant
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture du fichier : " + e.getMessage());
+            return null;
         }
     }
 
-    // CREER POUR LA GESTION DES TESTS
+
+    // CAREER POUR LA GESTION DES TESTS
     /**
      * Récupère la valeur de la case spécifiée dans la grille du jeu.
      *
      * @param row La ligne de la case.
      * @param col La colonne de la case.
-     * @return La valeur de la case dans la grille. -1 si le tir a touché un bateau, 0 si la case est vide, et une valeur positive
-     *         correspondant à la longueur du bateau si la case est occupée par un bateau.
+     * @return La valeur de la case dans la grille.
      * @throws IndexOutOfBoundsException Si la position spécifiée est en dehors des limites de la grille.
      */
     public int getGridValue(int row, int col) throws IndexOutOfBoundsException {
@@ -364,6 +387,12 @@ public class BattleShipGameController {
     public void setGridRectangles(Rectangle[][] rectangles) {
         gridRectangles = rectangles;
     }
+
+    /**
+     * Renvoie la grille du jeu sous sa forme de tableau à 2 dimensions d'entiers.
+     *
+     * @return Un tableau 2D d'entiers représentant la grille du jeu
+     */
     public int[][] getGrid() {
         return grid;
     }

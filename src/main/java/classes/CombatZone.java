@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 public class CombatZone {
     private int[][] grid;
     private Group zone;
-    private Rectangle[][] gridRectangles; // Les rectangles de la grille
+    private Rectangle[][] gridRectangles; // pour facilement gérer les modifs visuelles
     private boolean tricheMode; // Variable pour indiquer si le mode triche est activé
 
     /**
@@ -18,7 +18,7 @@ public class CombatZone {
     public CombatZone(int[][] grid) {
         this.grid = grid;
         this.gridRectangles = rectangleArraySize(grid);
-        this.zone = generateZone(grid, gridRectangles);
+        this.zone = generateZone(grid);
         this.tricheMode = false; // Par défaut, le mode triche est désactivé
     }
 
@@ -37,11 +37,10 @@ public class CombatZone {
     /**
      * Génère un groupe de rectangles pour représenter visuellement la grille de la zone de combat.
      *
-     * @param grid            La grille d'entiers représentant les cases de la zone de combat.
-     * @param gridRectangles  Un tableau 2D de rectangles pour stocker les références aux rectangles générés.
+     * @param grid  La grille d'entiers représentant les cases de la zone de combat.
      * @return Un groupe contenant les rectangles pour représenter la grille de la zone de combat.
      */
-    public Group generateZone(int[][] grid, Rectangle[][] gridRectangles) {
+    public Group generateZone(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
         int rectangleSize = 50; // Taille des rectangles (50 pixels de longueur et de largeur choix personnel)
@@ -54,7 +53,7 @@ public class CombatZone {
                 int y = row * rectangleSize;
 
                 Rectangle rectangle = new Rectangle(x, y, rectangleSize, rectangleSize);
-                rectangle.setFill(Color.LIGHTGRAY); // Couleur du rectangle (peut être modifiée selon les besoins)
+                rectangle.setFill(Color.LIGHTGRAY); // Couleur du rectangle :-)
 
                 rectangleGroup.getChildren().add(rectangle);
 
@@ -87,7 +86,7 @@ public class CombatZone {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 Rectangle rectangle = gridRectangles[row][col];
-                if (tricheMode && grid[row][col] != 0) {
+                if (tricheMode && grid[row][col] > 0) {
                     rectangle.setFill(Color.GRAY); // Affiche les bateaux en gris lorsque le mode triche est activé
                 } else {
                     rectangle.setFill(Color.LIGHTGRAY); // Sinon, affiche les cases normalement

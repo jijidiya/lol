@@ -41,11 +41,20 @@ public class Controller {
     }
     @FXML
     private void startNewCustomGame(ActionEvent e) {
-        CustomGameDialog customGameDialog = new CustomGameDialog();
-        customGameDialog.showAndWait();
+        int customWidth = 10;
+        int customHeight = 10;
 
-        int customWidth = customGameDialog.getCustomWidth();
-        int customHeight = customGameDialog.getCustomHeight();
+        try {
+            CustomGameDialog customGameDialog = new CustomGameDialog();
+            customGameDialog.showAndWait();
+
+            customWidth = customGameDialog.getCustomWidth();
+            customHeight = customGameDialog.getCustomHeight();
+
+            // Reste du code...
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Afficher la trace complète de l'exception
+        }
 
         if (customWidth >= 6 && customHeight >= 6 && customWidth <= 26 && customHeight <= 26) {
             // Créer une nouvelle grille personnalisée

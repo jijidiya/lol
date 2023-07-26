@@ -2,7 +2,7 @@ package classes;
 
 
 /**
- * Classe qui représentant les @targetPosition qui seront sauvegardées
+ * Classe qui représente les @targetPosition qui seront sauvegardées
  */
 public class Position {
     private int row; // Numéro de ligne
