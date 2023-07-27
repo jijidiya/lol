@@ -23,6 +23,7 @@ public class BattleShipGameController {
     private  int[][] grid; // La grille du jeu
     private Rectangle[][] gridRectangles; // Les rectangles de la grille
     private Random random;
+    private String[] shipsName= {"Mazono","Black Pearl", "Sunny", "Vogue Merry", "Jolly Roger", "Oxford"};
     // Liste de listes pour stocker les positions occupées par chaque bateau de la flotte
     private List<List<Integer>> shipsPositions = new ArrayList<>();
 
@@ -299,6 +300,21 @@ public class BattleShipGameController {
 
         return distances;
     }
+    public String getDistanceFromShips(String targetPosition) {
+        StringBuilder result = new StringBuilder();
+        try {
+            List<Integer> distances = manhattanDistance(targetPosition);
+            int shipIndex = 0;
+            for (Integer distance : distances) {
+                shipIndex++;
+                result.append("Votre tir est à une distance de ").append(distance).append(" cases du bateau ").append(shipsName[shipIndex]).append("\n");
+            }
+        } catch (IllegalArgumentException e) {
+            result.append(e.getMessage());
+        }
+        return result.toString();
+    }
+
 
 
     //CHARGEMENT D'UNE PARTIE À PARTIR D'UN FICHIER TXT

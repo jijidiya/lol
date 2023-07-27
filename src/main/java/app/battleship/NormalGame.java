@@ -3,10 +3,8 @@ package app.battleship;
 import classes.BattleShipGameController;
 import classes.CombatZone;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Parent;
+import javafx.scene.Group;;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +20,7 @@ public class NormalGame extends Application {
     private BattleShipGameController gameController;
     private CombatZone combatZone;
     private TextField targetInput;
+    private TextField distanceTextField;
     private Label resultLabel;
     @Override
     public void start(Stage thirdStage) throws IOException {
@@ -44,8 +43,19 @@ public class NormalGame extends Application {
         fireButton.setOnAction(e -> handleFireButtonClick());
         inputBox.getChildren().addAll(targetInput, fireButton);
 
+
+
+        distanceTextField = new TextField();
+        distanceTextField.setEditable(false); //
+        distanceTextField.setPromptText("Distance from the ship");
+        distanceTextField.setPrefSize(285, 285);
+        root.setRight(distanceTextField);
+
+
         // Ajoute le HBox à la zone inférieure (bottom) du BorderPane
         root.setBottom(inputBox);
+        inputBox.setTranslateX(565);
+        inputBox.setTranslateY(-105);
 
 
         Scene scene = new Scene(root, 1350, 685);
@@ -59,10 +69,15 @@ public class NormalGame extends Application {
         if (gameController.isValidTargetPosition(targetPosition)) {
             String result = gameController.fireAtTargetPosition(targetPosition);
             resultLabel.setText(result);
+
+            // Afficher les distances de Manhattan dans distanceTextField
+            String distanceResult = gameController.getDistanceFromShips(targetPosition);
+            distanceTextField.setText(distanceResult);
         } else {
             resultLabel.setText("Position cible invalide !");
         }
     }
+
     public static void main(String[] args){
         launch(args);
     }
