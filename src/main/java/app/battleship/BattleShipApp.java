@@ -10,19 +10,15 @@ import java.io.IOException;
 public class BattleShipApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Bataille Navale");
+        // Charger le fichier FXML
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
 
-        try {
-            // Charger le fichier FXML
-            Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Scene scene = new Scene(root, 1350, 685);
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-            Scene scene = new Scene(root, 1200, 670);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {

@@ -43,7 +43,7 @@ public class CombatZone {
     public Group generateZone(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
-        int rectangleSize = 50; // Taille des rectangles (50 pixels de longueur et de largeur choix personnel)
+        int rectangleSize = 35; // Taille des rectangles (50 pixels de longueur et de largeur choix personnel)
 
         Group rectangleGroup = new Group();
 
@@ -54,6 +54,9 @@ public class CombatZone {
 
                 Rectangle rectangle = new Rectangle(x, y, rectangleSize, rectangleSize);
                 rectangle.setFill(Color.LIGHTGRAY); // Couleur du rectangle :-)
+
+                rectangle.setStroke(Color.BLACK);
+                rectangle.setStrokeWidth(1);
 
                 rectangleGroup.getChildren().add(rectangle);
 

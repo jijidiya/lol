@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Font?>
-<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.battleship.CustomGameDialog">
+<Pane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.battleship.Controller">
     <HBox spacing="10">
         <Label text="Nombre de colonnes :"/>
         <TextField fx:id="columnsTextField" />
@@ -14,5 +14,5 @@
         <TextField fx:id="rowsTextField" />
     </HBox>
 
-    <Button onAction="#onStartButtonClicked" text="Démarrer" />
-</VBox>
+    <Pane/>
+</Pane>

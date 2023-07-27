@@ -12,13 +12,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Optional;
 
 
 public class Controller {
     @FXML
     private Pane combatPane; // Référence au Pane avec l'ID "combatPane" dans le fichier FXML
-
+    @FXML
+    private Group zone;
     @FXML
     private TextField columnsTextField; // Champ de texte pour les colonnes
     @FXML
@@ -34,46 +38,22 @@ public class Controller {
     @FXML
     private Button newAIGameButton;
 
+
+
     // Méthode pour démarrer une nouvelle partie
     @FXML
-    private void startNewGame(ActionEvent e) {
-        // À compléter : Afficher la configuration pour une nouvelle partie (choix des options)
+    private void startNewGame(ActionEvent e) throws Exception {
+        NormalGame normalGame = new NormalGame();
+        normalGame.start(new Stage());
+        newGameButton.getScene().getWindow().hide();
     }
     @FXML
-    private void startNewCustomGame(ActionEvent e) {
-        int customWidth = 10;
-        int customHeight = 10;
+    private void startNewCustomGame(ActionEvent e) throws IOException {
+        CustomGame customGame = new CustomGame();
+        customGame.start(new Stage());
+        newCustomGame.getScene().getWindow().hide();
 
-        try {
-            CustomGameDialog customGameDialog = new CustomGameDialog();
-            customGameDialog.showAndWait();
 
-            customWidth = customGameDialog.getCustomWidth();
-            customHeight = customGameDialog.getCustomHeight();
-
-            // Reste du code...
-        } catch (Exception ex) {
-            ex.printStackTrace(); // Afficher la trace complète de l'exception
-        }
-
-        if (customWidth >= 6 && customHeight >= 6 && customWidth <= 26 && customHeight <= 26) {
-            // Créer une nouvelle grille personnalisée
-            BattleShipGameController gameController = new BattleShipGameController(customWidth, customHeight, new int[]{6, 5, 4, 3, 2, 1});
-            int[][] customGrid = gameController.getGrid();
-            CombatZone zone = new CombatZone(customGrid);
-            gameController.setGridRectangles(zone.getGridRectangles());
-            Group zoneGroup = zone.getZone();
-
-            // Ajouter la zone de combat au Pane combatPane
-            combatPane.getChildren().clear();
-            combatPane.getChildren().add(zoneGroup);
-
-            // À ce stade, la nouvelle partie personnalisée est prête à être jouée !
-        } else {
-            // Afficher un message d'erreur si les dimensions sont invalides
-            // (vous pouvez également mettre en surbrillance les champs de texte en rouge pour indiquer une erreur)
-            System.out.println("Dimensions invalides. La grille doit avoir une taille comprise entre 6x6 et 26x26.");
-        }
     }
 
 

@@ -24,7 +24,7 @@ public class BattleShipGameController {
     private Rectangle[][] gridRectangles; // Les rectangles de la grille
     private Random random;
     // Liste de listes pour stocker les positions occupées par chaque bateau de la flotte
-    private List<List<Integer>> shipsPositions;
+    private List<List<Integer>> shipsPositions = new ArrayList<>();
 
     //CONSTRUCTEUR
     /**
