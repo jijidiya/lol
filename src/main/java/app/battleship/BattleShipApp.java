@@ -13,7 +13,7 @@ public class BattleShipApp extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Bataille Navale");
         // Charger le fichier FXML
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/main.fxml"));
 
         Scene scene = new Scene(root, 1350, 685);
         primaryStage.setScene(scene);

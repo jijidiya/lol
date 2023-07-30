@@ -17,7 +17,6 @@ public class BattleShipGameController {
     private int gridWidth = 10; // Valeur par défaut pour la largeur de la grille
     private int gridHeight = 10; // Valeur par défaut pour la hauteur de la grille
     private int numShips;
-    private int GRID_SIZE = 10;
     private int[] shipLengths = {5, 4, 3, 3, 2};
 
     private  int[][] grid; // La grille du jeu
@@ -88,26 +87,24 @@ public class BattleShipGameController {
      * Place les bateaux aléatoirement sur la grille du jeu.
      */
     public void placeShipsRandomly() {
-
+        int cpt = 0;
         for (int shipLength : shipLengths) {
             boolean isPlaced = false;
             while (!isPlaced) {
                 int row = random.nextInt(gridHeight);
                 int col = random.nextInt(gridWidth);
                 boolean isVertical = random.nextBoolean();
-
                 if (canPlaceShip(row, col, shipLength, isVertical)) {
                     placeShip(row, col, shipLength, isVertical);
-
                     // Enregistre les positions occupées par le bateau dans la liste correspondante
                     for (int i = 0; i < shipLength; i++) {
                         if (isVertical) {
-                            shipsPositions.get(shipLength - 1).add((row + i) * gridWidth + col);
+                            shipsPositions.get(cpt).add((row + i) * gridWidth + col);
                         } else {
-                            shipsPositions.get(shipLength - 1).add(row * gridWidth + (col + i));
+                            shipsPositions.get(cpt).add(row * gridWidth + (col + i));
                         }
                     }
-
+                    cpt++;
                     isPlaced = true;
                 }
             }
@@ -190,7 +187,7 @@ public class BattleShipGameController {
 
                 // Vérifier si la position cible est dans la grille
                 if (isInGrid(row, col)) {
-                    if (grid[row][col] != 0) {
+                    if (grid[row][col] > 0) {
                         // Le tir a touché un bateau
                         grid[row][col] = -1; // Marquer le tir comme "touché"
                         updateGridButton(row, col, Color.RED); // Mettre à jour l'apparence du bouton avec une couleur spécifique
@@ -273,10 +270,12 @@ public class BattleShipGameController {
 
     //CALCUL DE LA DISTANCE DE MANHATTAN
     /**
-     * Calcule les distances de Manhattan entre une position cible et toutes les positions des bateaux de la flotte.
+     * Calcule les distances de Manhattan entre une position cible et les positions de chaque bateau de la flotte et
+     * dans l'éventualité qu'un bateau soit dejà coulé, elle renvoie la valeur max des int qui sera ensuite gérée pour
+     * signaler que le bateau est coulé.
      *
      * @param targetPosition La position cible sous forme de code lettre-numéro.
-     * @return Une liste des distances de Manhattan entre la position cible et toutes les positions des bateaux.
+     * @return Une liste d'entiers contenant les distances de Manhattan entre la position cible et les bateaux.
      * @throws IllegalArgumentException Si la position cible est invalide.
      */
     public List<Integer> manhattanDistance(String targetPosition) {
@@ -289,25 +288,44 @@ public class BattleShipGameController {
 
         List<Integer> distances = new ArrayList<>();
         for (List<Integer> shipPositions : shipsPositions) {
+            int minDistance = Integer.MAX_VALUE; // Initialise la distance minimale avec une valeur maximale possible
             for (int position : shipPositions) {
                 int row = position / gridWidth;
                 int col = position % gridWidth;
-
-                int distance = Math.abs(targetRow - row) + Math.abs(targetCol - col);
-                distances.add(distance);
+                if(grid[row][col] > 0){
+                    int distance = Math.abs(targetRow - row) + Math.abs(targetCol - col);
+                    if (distance < minDistance) {
+                        minDistance = distance; // Met à jour la distance minimale si une distance plus petite est trouvée
+                    }
+                }
             }
+            distances.add(minDistance); // Ajoute la distance minimale du bateau actuel à la liste
         }
 
         return distances;
     }
+
+    /**
+     * Calcule et renvoie les distances de Manhattan entre une position cible et les bateaux de la flotte.
+     * Affiche la distance de chaque bateau par rapport à la position cible, en excluant les distances infinies
+     * (lorsque la position cible est en dehors de la portée de tous les bateaux) et lorsque le bateau est deja
+     * entièrement coulé.
+     *
+     * @param targetPosition La position cible sous forme de code lettre-numéro.
+     * @return Une chaîne de caractères contenant les distances de chaque bateau par rapport à la position cible
+     *         ou un message d'erreur si la position cible est invalide.
+     */
     public String getDistanceFromShips(String targetPosition) {
+        int maxInt = Integer.MAX_VALUE;
         StringBuilder result = new StringBuilder();
         try {
             List<Integer> distances = manhattanDistance(targetPosition);
             int shipIndex = 0;
             for (Integer distance : distances) {
+                if (distance != maxInt){
+                    result.append("Distance de ").append(distance).append(" cases du ").append(shipsName[shipIndex]).append("\n");
+                }
                 shipIndex++;
-                result.append("Votre tir est à une distance de ").append(distance).append(" cases du bateau ").append(shipsName[shipIndex]).append("\n");
             }
         } catch (IllegalArgumentException e) {
             result.append(e.getMessage());

@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.battleship.Controller" stylesheets="@styles.css">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.battleship.Controller" stylesheets="@css/styles.css">
     <top>
         <Label text="Bataille Navale" BorderPane.alignment="CENTER">
             <font>
