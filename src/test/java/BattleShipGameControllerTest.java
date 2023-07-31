@@ -5,6 +5,7 @@ import classes.BattleShipGameController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BattleShipGameControllerTest {
@@ -111,9 +112,9 @@ public class BattleShipGameControllerTest {
         assertTrue(gameController.checkAllShipsSunk());
     }
     @Test
-    public void testLoadGameFromFile() {
+    public void testLoadGameFromFile() throws IOException {
         // Chargez la grille depuis le fichier test_grid.txt
-        String filePath = "test/resources/test_grid.txt";
+        String filePath = String.valueOf(getClass().getResource("test_grid"));
         gameController.loadGameFromFile(filePath);
 
         // Vérifiez que la grille est correctement chargée dans le jeu

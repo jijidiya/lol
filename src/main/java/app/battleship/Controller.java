@@ -48,7 +48,7 @@ public class Controller {
         newGameButton.getScene().getWindow().hide();
     }
     @FXML
-    private void startNewCustomGame(ActionEvent e) throws IOException {
+    private void startNewCustomGame(ActionEvent e) throws Exception {
         CustomGame customGame = new CustomGame();
         customGame.start(new Stage());
         newCustomGame.getScene().getWindow().hide();

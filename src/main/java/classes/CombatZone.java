@@ -44,6 +44,9 @@ public class CombatZone {
         int rows = grid.length;
         int cols = grid[0].length;
         int rectangleSize = 35; // Taille des rectangles (50 pixels de longueur et de largeur choix personnel)
+        if (rows > 10 || cols > 10){
+            rectangleSize = 20;
+        }
 
         Group rectangleGroup = new Group();
 

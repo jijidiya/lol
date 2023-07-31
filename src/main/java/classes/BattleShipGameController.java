@@ -53,8 +53,8 @@ public class BattleShipGameController {
         this.gridHeight = gridHeight;
         this.numShips = 6;
         this.shipLengths = shipLengths;
-        grid = new int[gridWidth][gridHeight];
-        random = new Random();
+        this.grid = new int[gridWidth][gridHeight];
+        this.random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
         }
@@ -75,8 +75,8 @@ public class BattleShipGameController {
         this.gridHeight = gridHeight;
         this.numShips = numShips;
         this.shipLengths = shipLengths;
-        grid = new int[gridWidth][gridHeight];
-        random = new Random();
+        this.grid = new int[gridWidth][gridHeight];
+        this.random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
         }
@@ -126,7 +126,7 @@ public class BattleShipGameController {
                 return false;
             }
             for (int row = startRow; row < startRow + length; row++) {
-                if (grid[row][startCol] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
+                if (grid[startCol][row] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
             }
@@ -135,7 +135,7 @@ public class BattleShipGameController {
                 return false;
             }
             for (int col = startCol; col < startCol + length; col++) {
-                if (grid[startRow][col] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
+                if (grid[col][startRow] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
             }
@@ -154,11 +154,11 @@ public class BattleShipGameController {
     public void placeShip(int startRow, int startCol, int length, boolean isVertical) {
         if (isVertical) {
             for (int row = startRow; row < startRow + length; row++) {
-                grid[row][startCol] = length; // Marque la case de la grille avec la longueur du bateau
+                grid[startCol][row] = length; // Marque la case de la grille avec la longueur du bateau
             }
         } else {
             for (int col = startCol; col < startCol + length; col++) {
-                grid[startRow][col] = length; // Marque la case de la grille avec la longueur du bateau
+                grid[col][startRow] = length; // Marque la case de la grille avec la longueur du bateau
             }
         }
     }
@@ -343,7 +343,7 @@ public class BattleShipGameController {
      * @param filePath Le chemin vers le fichier texte à charger.
      * @throws IOException En cas d'erreur lors de la lecture du fichier.
      */
-    public int[][] loadGameFromFile(String filePath) {
+    public int[][] loadGameFromFile(String filePath) throws  IOException{
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             List<String> lines = new ArrayList<>();
             String line;

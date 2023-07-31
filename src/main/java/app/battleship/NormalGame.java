@@ -121,6 +121,7 @@ public class NormalGame extends Application {
     private void handleBackButtonClick() throws Exception {
         BattleShipApp startMenu = new BattleShipApp();
         startMenu.start(new Stage());
+        backButton.getScene().getWindow().hide();
     }
 
     private void handleFireButtonClick() {
