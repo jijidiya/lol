@@ -271,7 +271,7 @@ public class BattleShipGameController {
     //CALCUL DE LA DISTANCE DE MANHATTAN
     /**
      * Calcule les distances de Manhattan entre une position cible et les positions de chaque bateau de la flotte et
-     * dans l'éventualité qu'un bateau soit dejà coulé, elle renvoie la valeur max des int qui sera ensuite gérée pour
+     * dans l'éventualité qu'un bateau soit deja coulé, elle renvoie la valeur max des int qui sera ensuite gérée pour
      * signaler que le bateau est coulé.
      *
      * @param targetPosition La position cible sous forme de code lettre-numéro.
