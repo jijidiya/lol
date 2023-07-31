@@ -53,7 +53,7 @@ public class BattleShipGameController {
         this.gridHeight = gridHeight;
         this.numShips = 6;
         this.shipLengths = shipLengths;
-        this.grid = new int[gridWidth][gridHeight];
+        this.grid = new int[gridHeight][gridWidth];
         this.random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
@@ -75,7 +75,7 @@ public class BattleShipGameController {
         this.gridHeight = gridHeight;
         this.numShips = numShips;
         this.shipLengths = shipLengths;
-        this.grid = new int[gridWidth][gridHeight];
+        this.grid = new int[gridHeight][gridWidth];
         this.random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
@@ -126,7 +126,7 @@ public class BattleShipGameController {
                 return false;
             }
             for (int row = startRow; row < startRow + length; row++) {
-                if (grid[startCol][row] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
+                if (grid[row][startCol] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
             }
@@ -135,7 +135,7 @@ public class BattleShipGameController {
                 return false;
             }
             for (int col = startCol; col < startCol + length; col++) {
-                if (grid[col][startRow] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
+                if (grid[startRow][col] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
             }
@@ -154,11 +154,11 @@ public class BattleShipGameController {
     public void placeShip(int startRow, int startCol, int length, boolean isVertical) {
         if (isVertical) {
             for (int row = startRow; row < startRow + length; row++) {
-                grid[startCol][row] = length; // Marque la case de la grille avec la longueur du bateau
+                grid[row][startCol] = length; // Marque la case de la grille avec la longueur du bateau
             }
         } else {
             for (int col = startCol; col < startCol + length; col++) {
-                grid[col][startRow] = length; // Marque la case de la grille avec la longueur du bateau
+                grid[startRow][col] = length; // Marque la case de la grille avec la longueur du bateau
             }
         }
     }
@@ -191,16 +191,13 @@ public class BattleShipGameController {
                         // Le tir a touché un bateau
                         grid[row][col] = -1; // Marquer le tir comme "touché"
                         updateGridButton(row, col, Color.RED); // Mettre à jour l'apparence du bouton avec une couleur spécifique
-                        System.out.println("Bateau touché");
                         result = "touché";
                     } else if (grid[row][col] == -1) {
-                        System.out.println("Vous avez déjà tiré ici !");
                         result ="Vous avez déjà tiré ici !";
                     } else {
                         // Le tir est dans l'eau (aucun bateau n'a été touché)
                         grid[row][col] = -1; // Marquer le tir comme "dans l'eau"
                         updateGridButton(row, col, Color.BLUE);
-                        System.out.println("Dans l'eau, Plouf!!");
                         result = "Dans l'eau, Plouf!!";
                     }
 

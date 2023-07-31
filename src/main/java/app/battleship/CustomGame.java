@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -79,6 +81,41 @@ public class CustomGame extends Application {
             BorderPane.setAlignment(cheatModeButton, Pos.TOP_RIGHT);
             BorderPane.setMargin(cheatModeButton, new Insets(10));
             root.setTop(cheatModeButton);
+
+            // Crée un HBox pour la zone de saisie et le bouton "Tirer"
+            HBox inputBox = new HBox(10);
+            inputBox.setPadding(new Insets(10));
+            targetInput = new TextField();
+            targetInput.setPromptText("Entrez la position cible (ex: A3)");
+            Button fireButton = new Button("Tirer");
+            fireButton.setOnAction(e -> handleFireButtonClick());
+            inputBox.getChildren().addAll(targetInput, fireButton);
+
+
+            // Crée un label pour afficher les distances de Manhattan
+            distanceLabel = new Label("       Les Distances de Manhattan ");
+            distanceLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
+
+            distanceTextArea = new TextArea();
+            distanceTextArea.setEditable(false);
+            distanceTextArea.setWrapText(true); // Permet le retour à la ligne automatique
+            distanceTextArea.setPrefSize(285, 150);
+            distanceTextArea.setMaxHeight(150);
+
+
+            // Crée un VBox pour les deux éléments (distanceLabel et distanceTextArea)
+            VBox distanceBox = new VBox(10);
+            distanceBox.setTranslateY(200);
+            distanceBox.getChildren().addAll(distanceLabel, distanceTextArea);
+
+            // Ajoute le VBox à la zone droite (right) du BorderPane
+            root.setRight(distanceBox);
+
+
+            // Ajoute le HBox à la zone inférieure (bottom) du BorderPane
+            root.setBottom(inputBox);
+            inputBox.setTranslateX(565);
+            inputBox.setTranslateY(-45);
 
 
 

@@ -96,7 +96,7 @@ public class NormalGame extends Application {
         distanceTextArea.setWrapText(true); // Permet le retour à la ligne automatique
         distanceTextArea.setPrefSize(285, 150);
         distanceTextArea.setMaxHeight(150);
-        //distanceTextArea.setTranslateY(200);
+
 
         // Crée un VBox pour les deux éléments (distanceLabel et distanceTextArea)
         VBox distanceBox = new VBox(10);

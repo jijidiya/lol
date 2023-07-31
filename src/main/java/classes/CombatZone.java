@@ -94,7 +94,9 @@ public class CombatZone {
                 Rectangle rectangle = gridRectangles[row][col];
                 if (tricheMode && grid[row][col] > 0) {
                     rectangle.setFill(Color.GRAY); // Affiche les bateaux en gris lorsque le mode triche est activé
-                } else {
+                } else if( grid[row][col] == -1) {
+                    //ne rien faire TODO: tu dois chercher une maniere optimale de l'implementer
+                }else{
                     rectangle.setFill(Color.LIGHTGRAY); // Sinon, affiche les cases normalement
                 }
             }
