@@ -1,12 +1,14 @@
 package classes;
 
 
+import java.util.Objects;
+
 /**
  * Classe qui représente les @targetPosition qui seront sauvegardées
  */
 public class Position {
-    private int row; // Numéro de ligne
-    private int col; // Numéro de colonne
+    private final int row; // Numéro de ligne
+    private final int col; // Numéro de colonne
     private Position position;
 
     /**
@@ -18,7 +20,6 @@ public class Position {
     public Position(int row, int col) {
         this.row = row;
         this.col = col;
-        this.position = new Position(row, col);
     }
 
     /**
@@ -39,8 +40,20 @@ public class Position {
         return col;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Position other = (Position) obj;
+        return row == other.row && col == other.col;
+    }
 
-    public Position getPosition() {
-        return position;
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, col);
     }
 }
