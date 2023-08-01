@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Position {
     private final int row; // Numéro de ligne
     private final int col; // Numéro de colonne
-    private Position position;
 
     /**
      * Constructeur de la classe Position.
