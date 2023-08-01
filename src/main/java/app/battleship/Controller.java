@@ -27,7 +27,7 @@ public class Controller {
 
 
 
-    // Méthode pour démarrer une nouvelle partie
+    // Méthode pour démarrer une nouvelle partie.
     @FXML
     private void startNewGame(ActionEvent e) throws Exception {
         NormalGame normalGame = new NormalGame();
