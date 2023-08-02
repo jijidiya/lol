@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 
 public class CustomGame extends Application {
+    private BorderPane root;
     private BattleShipGameController gameController;
     private CombatZone combatZone;
     private Group zone;
@@ -50,7 +51,7 @@ public class CustomGame extends Application {
             combatZone = new CombatZone(gameController.getGrid());
             gameController.setGridRectangles(combatZone.getGridRectangles());
             zone = combatZone.getZone();
-            BorderPane root = new BorderPane(zone);
+            root = new BorderPane(zone);
             root.setStyle("-fx-background-color: #333333;");
 
             // Chargement de l'image du bouton retour
@@ -192,11 +193,15 @@ public class CustomGame extends Application {
             String distanceResult = gameController.getDistanceFromShips(targetPosition);
 
             distanceTextArea.setText(distanceResult);
-            // Ajout des retours à la ligne pour le résultat
-            //resultLabel.setText(result.replace("\n", System.getProperty("line.separator")));
+            endOfGame(gameController.checkAllShipsSunk());
         } else {
             resultLabel.setText("Position cible invalide !");
         }
+    }
+
+    private void endOfGame(boolean allShipsSunk){
+        int score = gameController.getScore();
+        root.getChildren().clear();
     }
 
     public void activateCheatMode(){

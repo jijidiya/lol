@@ -14,6 +14,7 @@ import java.io.IOException;
 
 
 public class BattleShipGameController {
+    private int score = 0;
     private int gridWidth = 10; // Valeur par défaut pour la largeur de la grille
     private int gridHeight = 10; // Valeur par défaut pour la hauteur de la grille
     private int numShips;
@@ -181,6 +182,7 @@ public class BattleShipGameController {
         try {
             // Vérifier si la position cible est valide (lettre suivie d'un chiffre)
             if (isValidTargetPosition(targetPosition)) {
+                score++;
                 char rowLetter = targetPosition.charAt(0);
                 int row = rowLetter - 'A';
                 int col = Integer.parseInt(targetPosition.substring(1));
@@ -198,13 +200,7 @@ public class BattleShipGameController {
                         // Le tir est dans l'eau (aucun bateau n'a été touché)
                         grid[row][col] = -1; // Marquer le tir comme "dans l'eau"
                         updateGridButton(row, col, Color.BLUE);
-                        result = "Dans l'eau, Plouf!!";
-                    }
-
-                    // Vérifier si tous les bateaux ont été coulés
-                    if (checkAllShipsSunk()) {
-                        System.out.println("Tous les bateaux ont été coulés. Partie terminée !");
-                        // TODO : Gérer la fin du jeu ici
+                        result = "Plouf!!";
                     }
                     return result;
                 } else {
@@ -410,6 +406,10 @@ public class BattleShipGameController {
 
 
     //ACCESSEURS
+
+    public int getScore(){
+        return score;
+    }
     /**
      * Définit les rectangles de la grille du jeu.
      *
