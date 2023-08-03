@@ -327,6 +327,18 @@ public class BattleShipGameController {
     }
 
 
+    //REDEMARRER LE JEU
+    /**
+     * Redémarre le jeu en remettant à zéro les paramètres nécessaires.
+     */
+    public void restartGame() {
+        // Remettre à zéro les paramètres du jeu, par exemple :
+        grid = new int[gridHeight][gridWidth];; // Réinitialise la grille de jeu
+        this.placeShipsRandomly(); // Replace les navires aléatoirement sur la grille
+        // Réinitialiser d'autres paramètres si nécessaire
+    }
+
+
 
     //CHARGEMENT D'UNE PARTIE À PARTIR D'UN FICHIER TXT
     /**

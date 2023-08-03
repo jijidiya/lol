@@ -141,8 +141,25 @@ public class NormalGame extends Application {
         }
     }
     private void endOfGame(boolean allShipsSunk){
-        int score = gameController.getScore();
-        root.getChildren().clear();
+        if(allShipsSunk) {
+            EndGame endGame = new EndGame(gameController, this);
+            endGame.start(new Stage());
+        }
+    }
+
+    public void restartGame() {
+        // Réinitialiser le contrôleur du jeu
+        gameController.restartGame();
+
+        // Réinitialiser la zone de combat
+        combatZone = new CombatZone(gameController.getGrid());
+        gameController.setGridRectangles(combatZone.getGridRectangles());
+        zone.getChildren().clear();
+        zone.getChildren().add(combatZone.getZone());
+
+        // Effacer les résultats précédents et les distances de Manhattan
+        resultLabel.setText("");
+        distanceTextArea.setText("");
     }
 
     public void activateCheatMode(){
