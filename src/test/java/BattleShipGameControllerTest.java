@@ -14,7 +14,7 @@ public class BattleShipGameControllerTest {
     @BeforeEach
     public void setUp() {
         // Instanciez un nouvel objet BattleShipGameController avant chaque test
-        gameController = new BattleShipGameController(5, 5, 2, new int[]{3, 2});
+        gameController = new BattleShipGameController(5, 5, new int[]{3, 2});
     }
 
     @Test

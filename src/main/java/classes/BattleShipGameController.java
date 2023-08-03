@@ -17,7 +17,6 @@ public class BattleShipGameController {
     private int score = 0;
     private int gridWidth = 10; // Valeur par défaut pour la largeur de la grille
     private int gridHeight = 10; // Valeur par défaut pour la hauteur de la grille
-    private int numShips;
     private int[] shipLengths = {5, 4, 3, 3, 2};
 
     private  int[][] grid; // La grille du jeu
@@ -52,29 +51,6 @@ public class BattleShipGameController {
     public BattleShipGameController(int gridWidth, int gridHeight, int[] shipLengths) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
-        this.numShips = 6;
-        this.shipLengths = shipLengths;
-        this.grid = new int[gridHeight][gridWidth];
-        this.random = new Random();
-        for (int shipLength : shipLengths) {
-            shipsPositions.add(new ArrayList<>());
-        }
-    }
-    /**
-     * Constructeur de la classe BattleShipGameController.
-     * Initialise le jeu de bataille navale avec les dimensions de la grille personnalisées,
-     * le nombre de bateaux et les longueurs de chaque bateau.
-     *
-     * @param gridWidth   La largeur de la grille de jeu.
-     * @param gridHeight  La hauteur de la grille de jeu.
-     * @param numShips    Le nombre total de bateaux dans la flotte.
-     * @param shipLengths Un tableau d'entiers représentant les longueurs de chaque bateau.
-     *                   La longueur d'un bateau est toujours comprise entre 1 et 6 cases.
-     */
-    public BattleShipGameController(int gridWidth, int gridHeight, int numShips, int[] shipLengths) {
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
-        this.numShips = numShips;
         this.shipLengths = shipLengths;
         this.grid = new int[gridHeight][gridWidth];
         this.random = new Random();

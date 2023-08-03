@@ -40,34 +40,44 @@ public class CustomWindow extends Application {
         Button startButton = new Button("Commencer la partie");
 
         startButton.setOnAction(e -> {
-            int columns = Integer.parseInt(columnInput.getText());
-            int rows = Integer.parseInt(rowInput.getText());
-            int numShips = Integer.parseInt(numShipsInput.getText());
-            String[] sizes = shipSizesInput.getText().split(",");
+            try{
+                int columns = Integer.parseInt(columnInput.getText());
+                int rows = Integer.parseInt(rowInput.getText());
+                int numShips = Integer.parseInt(numShipsInput.getText());
+                String[] sizes = shipSizesInput.getText().split(",");
 
-            if (numShips != sizes.length) {
-                displayErrorMessage("Le nombre de tailles de bateaux doit correspondre au nombre de bateaux saisi.");
-                return;
-            }
-
-            int[] shipSizes = new int[numShips];
-            for (int i = 0; i < numShips; i++) {
-                shipSizes[i] = Integer.parseInt(sizes[i].trim());
-            }
-
-            if (columns >= 6 && columns <= 26 && rows >= 6 && rows <= 26) {
-                BattleShipGameController gameController = new BattleShipGameController(columns, rows, shipSizes);
-                CustomGame customGame = new CustomGame(gameController);
-                try {
-                    customGame.start(new Stage());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                if (numShips != sizes.length) {
+                    displayErrorMessage("Le nombre de tailles de bateaux doit correspondre au nombre de bateaux saisi.");
+                    return;
                 }
-                primaryStage.close();
-            } else {
-                // Afficher un message d'erreur si les dimensions ne sont pas valides
-                displayErrorMessage("Les dimensions de la grille doivent être comprises entre 6 et 26.");
+
+                int[] shipSizes = new int[numShips];
+                for (int i = 0; i < numShips; i++) {
+                    int size = Integer.parseInt(sizes[i].trim());
+                    if (size < 1 || size > 6) {
+                        displayErrorMessage("La taille des bateaux doit être comprise entre 1 et 6.");
+                        return;
+                    }
+                    shipSizes[i] = size;
+                }
+
+                if (columns >= 6 && columns <= 26 && rows >= 6 && rows <= 26) {
+                    BattleShipGameController gameController = new BattleShipGameController(columns, rows, shipSizes);
+                    CustomGame customGame = new CustomGame(gameController);
+                    try {
+                        customGame.start(new Stage());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    primaryStage.close();
+                } else {
+                    // Afficher un message d'erreur si les dimensions ne sont pas valides
+                    displayErrorMessage("Les dimensions de la grille doivent être comprises entre 6 et 26.");
+                }
+            }catch (NumberFormatException ex){
+                displayErrorMessage("Veuillez remplir tous les champs.");
             }
+
         });
 
         vbox.getChildren().addAll(columnLabel, columnInput, rowLabel, rowInput, numShipsLabel, numShipsInput,
