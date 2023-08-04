@@ -18,10 +18,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
 
-public class NormalGame extends Application {
+public class AIGame extends Application {
     private BorderPane root;
     private Group zone;
     private BattleShipGameController gameController;
@@ -36,8 +35,8 @@ public class NormalGame extends Application {
     private Button cheatModeButton;
     private boolean isCheat;
     @Override
-    public void start(Stage thirdStage) throws IOException {
-        thirdStage.setTitle("Normal Game");
+    public void start(Stage fourthStage) throws Exception {
+        fourthStage.setTitle("Normal Game");
 
         gameController = new BattleShipGameController();
         gameController.placeShipsRandomly();
@@ -79,20 +78,14 @@ public class NormalGame extends Application {
         BorderPane.setMargin(cheatModeButton, new Insets(10));
         root.setTop(cheatModeButton);
 
-        // Crée un HBox pour la zone de saisie et le bouton "Tirer"
-        HBox inputBox = new HBox(10);
-        inputBox.setPadding(new Insets(10));
-        targetInput = new TextField();
-        targetInput.setPromptText("Entrez la position cible (ex: A3)");
-        Button fireButton = new Button("Tirer");
-        fireButton.setOnAction(e -> handleFireButtonClick());
-        inputBox.getChildren().addAll(targetInput, fireButton);
-
+        //Zone de tire
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
         resultLabel = new Label("Resultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
-        vBox.getChildren().addAll(inputBox, resultLabel);
+        Button fireButton = new Button("IA Tire");
+        fireButton.setOnAction(e -> handleFireButtonClick());
+        vBox.getChildren().addAll(fireButton, resultLabel);
 
 
         // Crée un label pour afficher les distances de Manhattan
@@ -121,8 +114,8 @@ public class NormalGame extends Application {
 
 
         Scene scene = new Scene(root, 1350, 685);
-        thirdStage.setScene(scene);
-        thirdStage.show();
+        fourthStage.setScene(scene);
+        fourthStage.show();
 
     }
 
@@ -178,3 +171,4 @@ public class NormalGame extends Application {
         launch(args);
     }
 }
+

@@ -68,6 +68,8 @@ public class EndGame extends Application {
             ((NormalGame) previousStage).restartGame();
         } else if (previousStage instanceof CustomGame) {
             ((CustomGame) previousStage).restartGame();
+        } else if (previousStage instanceof AIGame){
+            ((AIGame) previousStage).restartGame();
         }
 
         // Fermer la fenêtre de fin de jeu

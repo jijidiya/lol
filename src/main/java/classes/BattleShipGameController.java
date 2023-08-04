@@ -41,7 +41,7 @@ public class BattleShipGameController {
     /**
      * Constructeur de la classe BattleShipGameController.
      * Initialise le jeu de bataille navale avec les dimensions de la grille personnalisées,
-     * le nombre de bateaux et les longueurs de chaque bateau.
+     * les longueurs de chaque bateau qui indique aussi le nombre de bateaux qu'on aura.
      *
      * @param gridWidth   La largeur de la grille de jeu.
      * @param gridHeight  La hauteur de la grille de jeu.

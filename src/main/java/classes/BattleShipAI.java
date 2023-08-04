@@ -133,7 +133,7 @@ public class BattleShipAI {
     }
 
     /**
-     * Vérifie si une position donnée est valide dans une grille de dimensions spécifiées.
+     * Vérifie si une position donnée est valide dans la grille.
      *
      * @param position La position à vérifier.
      * @return true si la position est valide (à l'intérieur des limites de la grille), sinon false.
@@ -147,7 +147,7 @@ public class BattleShipAI {
     /**
      * Mémorise les résultats du tir pour une position donnée.
      *
-     * @param targetPosition La position cible du tir sous forme de code lettre-numéro (ex: "A1", "D5", etc.).
+     * @param targetPosition La position cible du tir.
      * @param result         Le résultat du tir ("touché" ou "raté").
      */
     public void rememberShotResult(String targetPosition, String result) {
@@ -166,6 +166,22 @@ public class BattleShipAI {
         // Stratégie de tir optimisée pour maximiser les chances de couler les bateaux ennemis.
         // N'oublie pas de marquer la case ciblée dans targetGrid avant de retourner la position cible.
         return null;
+    }
+
+    /**
+     * Compare les différentes distances de manhattan pour trouver la plus petite.
+     *
+     * @param manhattanDistances les distances de manhattan séparant les bateaux de la position cible.
+     * @return                   la distance de manhattan du plus proche bateau.
+     */
+    public int findMinDistance(List<Integer> manhattanDistances){
+        int minDistance = Integer.MAX_VALUE;
+        for (int distance: manhattanDistances) {
+            if(distance < minDistance){
+                minDistance = distance;
+            }
+        }
+        return minDistance;
     }
 
 

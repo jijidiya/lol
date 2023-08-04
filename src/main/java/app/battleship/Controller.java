@@ -2,10 +2,7 @@ package app.battleship;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 
 
 import javafx.stage.Stage;
@@ -29,13 +26,13 @@ public class Controller {
 
     // Méthode pour démarrer une nouvelle partie.
     @FXML
-    private void startNewGame(ActionEvent e) throws Exception {
+    private void startNewGame() throws Exception {
         NormalGame normalGame = new NormalGame();
         normalGame.start(new Stage());
         newGameButton.getScene().getWindow().hide();
     }
     @FXML
-    private void startNewCustomGame(ActionEvent e) throws Exception {
+    private void startNewCustomGame() throws Exception {
         CustomWindow customWindow = new CustomWindow();
         customWindow.start(new Stage());
         newCustomGame.getScene().getWindow().hide();
@@ -47,11 +44,14 @@ public class Controller {
 
     // Méthode pour charger une partie existante depuis un fichier
     @FXML
-    private void loadGame(ActionEvent e) {
+    private void loadGame() {
         // À compléter : Afficher la fenêtre de chargement de partie (si nécessaire)
     }
     @FXML
-    private void startNewAIGame(ActionEvent e){
+    private void startNewAIGame() throws Exception {
+        AIGame aIGame = new AIGame();
+        aIGame.start(new Stage());
+        newGameButton.getScene().getWindow().hide();
 
     }
 
