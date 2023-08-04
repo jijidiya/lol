@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.Group;
-import java.util.Optional;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,7 +18,7 @@ import javafx.stage.Stage;
 
 
 
-public class CustomGame extends Application {
+public class CustomGame extends Application implements IGame {
     private BorderPane root;
     private BattleShipGameController gameController;
     private CombatZone combatZone;
@@ -128,13 +127,13 @@ public class CustomGame extends Application {
     }
 
 
-    private void handleBackButtonClick() throws Exception {
+    public void handleBackButtonClick() throws Exception {
         BattleShipApp startMenu = new BattleShipApp();
         startMenu.start(new Stage());
         backButton.getScene().getWindow().hide();
     }
 
-    private void handleFireButtonClick() {
+    public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
             String result = gameController.fireAtTargetPosition(targetPosition);
@@ -150,7 +149,7 @@ public class CustomGame extends Application {
         }
     }
 
-    private void endOfGame(boolean allShipsSunk){
+    public void endOfGame(boolean allShipsSunk){
         if(allShipsSunk) {
             EndGame endGame = new EndGame(gameController, this);
             endGame.start(new Stage());

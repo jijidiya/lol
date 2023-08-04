@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class NormalGame extends Application {
+public class NormalGame extends Application implements IGame {
     private BorderPane root;
     private Group zone;
     private BattleShipGameController gameController;
@@ -126,13 +126,12 @@ public class NormalGame extends Application {
 
     }
 
-    private void handleBackButtonClick() throws Exception {
+    public void handleBackButtonClick() throws Exception {
         BattleShipApp startMenu = new BattleShipApp();
         startMenu.start(new Stage());
         backButton.getScene().getWindow().hide();
     }
-
-    private void handleFireButtonClick() {
+    public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
             String result = gameController.fireAtTargetPosition(targetPosition);
@@ -147,13 +146,12 @@ public class NormalGame extends Application {
             resultLabel.setText("Position cible invalide !");
         }
     }
-    private void endOfGame(boolean allShipsSunk){
+    public void endOfGame(boolean allShipsSunk){
         if(allShipsSunk) {
             EndGame endGame = new EndGame(gameController, this);
             endGame.start(new Stage());
         }
     }
-
     public void restartGame() {
         // Réinitialiser le contrôleur du jeu
         gameController.restartGame();
@@ -168,7 +166,6 @@ public class NormalGame extends Application {
         resultLabel.setText("");
         distanceTextArea.setText("");
     }
-
     public void activateCheatMode(){
         isCheat = !isCheat;
         combatZone.setTricheMode(isCheat);

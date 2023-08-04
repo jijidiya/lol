@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class AIGame extends Application {
+public class AIGame extends Application implements IGame{
     private BorderPane root;
     private Group zone;
     private BattleShipGameController gameController;
@@ -83,7 +83,7 @@ public class AIGame extends Application {
         vBox.setPadding(new Insets(10));
         resultLabel = new Label("Resultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
-        Button fireButton = new Button("IA Tire");
+        Button fireButton = new Button("Tirer");
         fireButton.setOnAction(e -> handleFireButtonClick());
         vBox.getChildren().addAll(fireButton, resultLabel);
 
@@ -119,13 +119,13 @@ public class AIGame extends Application {
 
     }
 
-    private void handleBackButtonClick() throws Exception {
+    public void handleBackButtonClick() throws Exception {
         BattleShipApp startMenu = new BattleShipApp();
         startMenu.start(new Stage());
         backButton.getScene().getWindow().hide();
     }
 
-    private void handleFireButtonClick() {
+    public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
             String result = gameController.fireAtTargetPosition(targetPosition);
@@ -140,7 +140,7 @@ public class AIGame extends Application {
             resultLabel.setText("Position cible invalide !");
         }
     }
-    private void endOfGame(boolean allShipsSunk){
+    public void endOfGame(boolean allShipsSunk){
         if(allShipsSunk) {
             EndGame endGame = new EndGame(gameController, this);
             endGame.start(new Stage());
