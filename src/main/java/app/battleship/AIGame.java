@@ -87,6 +87,7 @@ public class AIGame extends Application implements IGame{
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
         Button fireButton = new Button("Tirer");
         fireButton.setOnAction(e -> handleFireButtonClick());
+        vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(fireButton, resultLabel);
 
 
@@ -111,8 +112,7 @@ public class AIGame extends Application implements IGame{
 
         // Ajoute le HBox à la zone inférieure (bottom) du BorderPane
         root.setBottom(vBox);
-        vBox.setTranslateX(565);
-        vBox.setTranslateY(-105);
+        vBox.setTranslateY(-35);
 
 
         Scene scene = new Scene(root, 1350, 685);
@@ -162,7 +162,7 @@ public class AIGame extends Application implements IGame{
         zone.getChildren().clear();
         zone.getChildren().add(combatZone.getZone());
 
-        // Réinitialise le contrôleur de l'ia.
+        // Réinitialise le contrôleur de l'IA.
         aIPlayer = new BattleShipAI(gameController);
 
         // Effacer les résultats précédents et les distances de Manhattan

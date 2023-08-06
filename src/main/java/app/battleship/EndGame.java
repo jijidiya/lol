@@ -57,7 +57,7 @@ public class EndGame extends Application {
 
         vbox.getChildren().addAll(scoreLabel, restartButton, mainMenuButton, quitButton);
 
-        Scene scene = new Scene(vbox, 300, 200);
+        Scene scene = new Scene(vbox, 600, 600);
         this.endGameStage.setScene(scene);
         this.endGameStage.show();
     }

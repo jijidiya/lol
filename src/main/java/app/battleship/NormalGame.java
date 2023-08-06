@@ -86,12 +86,14 @@ public class NormalGame extends Application implements IGame {
         targetInput.setPromptText("Entrez la position cible (ex: A3)");
         Button fireButton = new Button("Tirer");
         fireButton.setOnAction(e -> handleFireButtonClick());
+        inputBox.setAlignment(Pos.CENTER);
         inputBox.getChildren().addAll(targetInput, fireButton);
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
         resultLabel = new Label("Resultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
+        vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(inputBox, resultLabel);
 
 
@@ -116,8 +118,7 @@ public class NormalGame extends Application implements IGame {
 
         // Ajoute le HBox à la zone inférieure (bottom) du BorderPane
         root.setBottom(vBox);
-        vBox.setTranslateX(565);
-        vBox.setTranslateY(-105);
+        vBox.setTranslateY(-45);
 
 
         Scene scene = new Scene(root, 1350, 685);

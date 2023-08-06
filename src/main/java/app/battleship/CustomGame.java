@@ -86,7 +86,15 @@ public class CustomGame extends Application implements IGame {
         targetInput.setPromptText("Entrez la position cible (ex: A3)");
         Button fireButton = new Button("Tirer");
         fireButton.setOnAction(e -> handleFireButtonClick());
+        inputBox.setAlignment(Pos.CENTER);
         inputBox.getChildren().addAll(targetInput, fireButton);
+
+        VBox vBox = new VBox(10);
+        vBox.setPadding(new Insets(10));
+        resultLabel = new Label("Resultat du tire");
+        resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(inputBox, resultLabel);
 
 
         // Crée un label pour afficher les distances de Manhattan
@@ -105,14 +113,13 @@ public class CustomGame extends Application implements IGame {
         distanceBox.setTranslateY(200);
         distanceBox.getChildren().addAll(distanceLabel, distanceTextArea);
 
-        // Ajoute le VBox à la zone droite (right) du BorderPane
+        // Ajoute distanceBox à la zone droite (right) du BorderPane
         root.setRight(distanceBox);
 
 
-        // Ajoute le HBox à la zone inférieure (bottom) du BorderPane
+        // Ajoute le vBox à la zone inférieure (bottom) du BorderPane
         root.setBottom(inputBox);
-        inputBox.setTranslateX(565);
-        inputBox.setTranslateY(-45);
+        vBox.setTranslateY(-25);
 
 
 

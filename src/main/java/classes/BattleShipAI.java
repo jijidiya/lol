@@ -5,8 +5,8 @@ import java.util.*;
 
 public class BattleShipAI {
     private BattleShipGameController gameController;
-    private int rows;
-    private int cols;
+    private final int rows;
+    private final int cols;
 
     private boolean[][] targetGrid;
     private Random random;
