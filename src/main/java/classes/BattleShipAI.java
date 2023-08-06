@@ -2,32 +2,31 @@ package classes;
 
 import java.util.*;
 
+
 public class BattleShipAI {
+    private BattleShipGameController gameController;
     private int rows;
     private int cols;
-    private int[][] enemyGrid;
+
     private boolean[][] targetGrid;
     private Random random;
     private List<Position> previousShots;
+    private List<Position> potentialTargets;
 
     private Map<Position, String> shotResults;
     /**
      * Construit un objet BattleShipAI pour représenter l'intelligence artificielle d'un joueur dans le jeu de Bataille Navale.
      *
-     * @param enemyGrid La grille de l'adversaire représentée par une matrice d'entiers où chaque élément indique la présence d'un bateau.
-     *                  La grille est représentée par une matrice de dimensions [rows][cols].
-     *                  Les valeurs possibles pour chaque élément de la matrice sont :
-     *                  - valeurs supérieures à 0 : bateau présent sur cette case
-     *                  - 0 : case vide non ciblée auparavant
-     *                  - -1 : tir effectué sur cette case, raté (tir dans l'eau) ou touché
+     * @param gameController Le contrôleur du jeu de Bataille Navale contenant les informations sur la grille,
      */
-    public BattleShipAI(int[][] enemyGrid) {
-        this.enemyGrid = enemyGrid;
-        rows = enemyGrid.length;
-        cols = enemyGrid[0].length;
+    public BattleShipAI(BattleShipGameController gameController) {
+        this.gameController = gameController;
+        rows = gameController.getGrid().length;
+        cols = gameController.getGrid()[0].length;
         targetGrid = new boolean[rows][cols];
         random = new Random();
         previousShots = new ArrayList<>();
+        shotResults = new HashMap<>();
     }
 
     /**
@@ -53,26 +52,39 @@ public class BattleShipAI {
     }
 
     /**
-     * Choix d'une nouvelle cible aléatoire parmi les positions cibles disponibles dans la grille.
+     * Choisi une position cible aléatoire parmi les positions disponibles.
+     * Si la liste des positions potentielles (potentialTargets) est vide, la méthode sélectionne une
+     * position cible parmi toutes les positions non encore ciblées dans la grille (targetGrid).
+     * Sinon, elle choisit une position cible parmi les positions potentielles.
+     * La position cible choisie est marquée comme ciblée dans la grille (targetGrid) et retournée sous la forme
+     * d'une chaîne de caractères au format lettre-numéro (ex: "A3").
      *
-     * @return La position cible sous forme de code lettre-numéro.
+     * @return La position cible aléatoire au format lettre-numéro.
      */
     private String chooseRandomTarget() {
-        List<Position> availableTargets = getAvailableTargets();
+        Position targetPosition;
+        if(potentialTargets == null ||potentialTargets.isEmpty()){
+            // Si la liste des positions potentielles est vide ou nulle,
+            // On obtient toutes les positions disponibles.
+            List<Position> availableTargets = getAvailableTargets();
 
-        // Choix aléatoire d'une position cible parmi celles disponibles
-        int randomIndex = random.nextInt(availableTargets.size());
-        Position targetPosition = availableTargets.get(randomIndex);
-
-        // Marquer la position cible comme ciblée dans la grille
-        targetGrid[targetPosition.getRow()][targetPosition.getCol()] = true;
-
+            // Choix aléatoire d'une position cible parmi celles disponibles.
+            int randomIndex = random.nextInt(availableTargets.size());
+            targetPosition = availableTargets.get(randomIndex);
+        }else{
+            // Si des positions potentielles sont disponibles.
+            int randomIndex = random.nextInt(potentialTargets.size());
+            targetPosition = potentialTargets.get(randomIndex);
+        }
         // Convertir la position cible en format lettre-numéro
         return convertPositionToString(targetPosition);
     }
 
     /**
-     * Explore les positions adjacentes à la dernière position de tir pour trouver une nouvelle cible.
+     * Explore les positions adjacentes à la dernière position de tir réussie pour trouver une nouvelle cible.
+     * La méthode recherche les positions adjacentes (en haut, en bas, à gauche et à droite) à la dernière position de
+     * tir qui a été marquée comme "touchée" dans les résultats des tirs (shotResults). Elle retourne une nouvelle
+     * position cible adjacente non encore ciblée dans la grille (targetGrid).
      *
      * @return Une nouvelle position cible adjacente non encore ciblée, ou null si aucune n'est disponible.
      */
@@ -83,28 +95,31 @@ public class BattleShipAI {
         // On vérifie si le résultat du dernier tir a été positif.
         // Ou si lastShot n'est pas null.
         if (lastShotResult != null && lastShotResult.equalsIgnoreCase("touché")){
-            // Obtenir les coordonnées de la dernière position de tir.
-            int row = lastShot.getRow();
-            int col = lastShot.getCol();
+            //uniquement si la distance de manhattan de la cible la plus proche est de 1.
+            if (findMinDistance(gameController.manhattanDistance(convertPositionToString(lastShot)))==1){
+                // Obtenir les coordonnées de la dernière position de tir.
+                int row = lastShot.getRow();
+                int col = lastShot.getCol();
 
-            // Créer une liste pour stocker les positions adjacentes
-            List<Position> adjacentPositions = new ArrayList<>();
+                // Créer une liste pour stocker les positions adjacentes
+                List<Position> adjacentPositions = new ArrayList<>();
 
-            // Ajouter les quatre positions adjacentes (en haut, en bas, à gauche et à droite) à la liste
-            adjacentPositions.add(new Position(row - 1, col)); // Haut
-            adjacentPositions.add(new Position(row + 1, col)); // Bas
-            adjacentPositions.add(new Position(row, col - 1)); // Gauche
-            adjacentPositions.add(new Position(row, col + 1)); // Droite
+                // Ajouter les quatre positions adjacentes (en haut, en bas, à gauche et à droite) à la liste
+                adjacentPositions.add(new Position(row - 1, col)); // Haut
+                adjacentPositions.add(new Position(row + 1, col)); // Bas
+                adjacentPositions.add(new Position(row, col - 1)); // Gauche
+                adjacentPositions.add(new Position(row, col + 1)); // Droite
 
-            Collections.shuffle(adjacentPositions);
+                Collections.shuffle(adjacentPositions);
 
-            // Parcourir la liste des positions adjacentes
-            for (Position position : adjacentPositions) {
-                // Vérifier si la position adjacente est valide (à l'intérieur des limites de la grille)
-                // et si elle n'a pas déjà été ciblée
-                if (isValidPosition(position) && !targetGrid[position.getRow()][position.getCol()]) {
-                    // Retourner la position adjacente non encore ciblée
-                    return position;
+                // Parcourir la liste des positions adjacentes
+                for (Position position : adjacentPositions) {
+                    // Vérifier si la position adjacente est valide (à l'intérieur des limites de la grille)
+                    // et si elle n'a pas déjà été ciblée
+                    if (isValidPosition(position) && !targetGrid[position.getRow()][position.getCol()]) {
+                        // Retourner la position adjacente non encore ciblée
+                        return position;
+                    }
                 }
             }
         }
@@ -159,20 +174,67 @@ public class BattleShipAI {
         }
     }
 
+    /**
+     * Optimise les coups en générant une liste de positions potentielles à cibler en fonction de la position cible
+     * et de la plus petite distance de Manhattan des bateaux par rapport à cette position.
+     *
+     * @param targetStringPosition La position cible (ex: "A3").
+     * @param manhattanDistance    La liste des distances de Manhattan des bateaux par rapport à la position cible.
+     */
+    public void optimizeShots(String targetStringPosition, List<Integer> manhattanDistance) {
+        potentialTargets = new ArrayList<>();
+        int minDistance = findMinDistance(manhattanDistance);
+        Position targetPosition = convertPosition(targetStringPosition);
 
+        //On vérifie que le jeu n'est pas fini dans un souci de performance
+        if (minDistance != 0) {
+            // Récupère les coordonnées de la position cible
+            int targetCol = targetPosition.getCol();
+            int targetRow = targetPosition.getRow();
 
-    public String optimizeShots() {
-        // TODO: Implémenter l'optimisation des coups
-        // Stratégie de tir optimisée pour maximiser les chances de couler les bateaux ennemis.
-        // N'oublie pas de marquer la case ciblée dans targetGrid avant de retourner la position cible.
-        return null;
+            // Parcourir les lignes dans une plage qui correspond à la distance de Manhattan
+            for (int row = targetRow - minDistance; row <= targetRow + minDistance; row++) {
+                // Calcule la distance en lignes (dRow) entre la ligne actuelle et la ligne de la position cible
+                int dRow = Math.abs(row - targetRow);
+
+                // Calcule la distance en colonnes (dCol) pour que la distance de Manhattan soit égale à minDistance
+                // Donc, pour obtenir la distance donnée (minDistance), nous devons réduire la distance verticale
+                // (dRow) de cette valeur, car la distance horizontale (dCol) sera égale à minDistance - dRow.
+                int dCol = minDistance - dRow;
+
+                // ColOffset contient les deux valeurs possibles pour le décalage horizontal : -dCol et dCol.
+                // Cela nous permet de parcourir les deux positions adjacentes à gauche et à droite de la position cible,
+                // sans avoir à répéter le code pour chaque côté.
+                for (int colOffset : new int[]{-dCol, dCol}) {
+                    int col = targetCol + colOffset;
+
+                    // Vérifie si la position adjacente est valide
+                    // et si elle n'a pas déjà été ciblée
+                    if (isInGrid(row, col) && !targetGrid[row][col]) {
+                        potentialTargets.add(new Position(row, col));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Vérifie si la position est dans la grille de jeu.
+     *
+     * @param row Le numéro de ligne de la position.
+     * @param col Le numéro de colonne de la position.
+     * @return true si la position est dans la grille, sinon false.
+     */
+    private boolean isInGrid(int row, int col) {
+        // Vérifier si la ligne et la colonne sont dans la plage valide de la grille.
+        return row >= 0 && row < rows && col >= 0 && col < cols;
     }
 
     /**
      * Compare les différentes distances de manhattan pour trouver la plus petite.
      *
      * @param manhattanDistances les distances de manhattan séparant les bateaux de la position cible.
-     * @return                   la distance de manhattan du plus proche bateau.
+     * @return                   la distance de manhattan du plus proche bateau ou 0 si le jeu est fini.
      */
     public int findMinDistance(List<Integer> manhattanDistances){
         int minDistance = Integer.MAX_VALUE;
@@ -180,6 +242,11 @@ public class BattleShipAI {
             if(distance < minDistance){
                 minDistance = distance;
             }
+        }
+        // Cette condition sera respectée uniquement si toutes les cibles sont touchées,
+        // dans le souci d'éviter un surplus de calcul inutile, nous renvoyons 0.
+        if (minDistance == Integer.MAX_VALUE){
+                return 0; //on dirait pas du C :-);
         }
         return minDistance;
     }
@@ -196,7 +263,7 @@ public class BattleShipAI {
     private Position convertPosition(String targetPosition) {
         char rowLetter = targetPosition.charAt(0);
         int row = rowLetter - 'A';
-        int col = Integer.parseInt(targetPosition.substring(1)) - 1;
+        int col = Integer.parseInt(targetPosition.substring(1));
         return new Position(row, col);
     }
 
@@ -208,7 +275,7 @@ public class BattleShipAI {
      */
     private String convertPositionToString(Position position) {
         char rowLetter = (char) (position.getRow() + 'A');
-        int col = position.getCol() + 1;
+        int col = position.getCol();
         return rowLetter + Integer.toString(col);
     }
 }

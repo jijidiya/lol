@@ -1,6 +1,7 @@
 package app.battleship;
 
 import classes.BattleShipGameController;
+import classes.BattleShipAI;
 import classes.CombatZone;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -14,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -24,6 +24,7 @@ public class AIGame extends Application implements IGame{
     private BorderPane root;
     private Group zone;
     private BattleShipGameController gameController;
+    private BattleShipAI aIPlayer;
     private CombatZone combatZone;
     private TextField targetInput;
     private TextArea distanceTextArea;
@@ -43,6 +44,7 @@ public class AIGame extends Application implements IGame{
         combatZone = new CombatZone(gameController.getGrid());
         zone = combatZone.getZone();
         gameController.setGridRectangles(combatZone.getGridRectangles());
+        aIPlayer = new BattleShipAI(gameController);
         zone.setTranslateX(100);
         root = new BorderPane(zone);
         root.setStyle("-fx-background-color: #333333;");
@@ -81,7 +83,7 @@ public class AIGame extends Application implements IGame{
         //Zone de tire
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        resultLabel = new Label("Resultat du tire");
+        resultLabel = new Label("Résultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
         Button fireButton = new Button("Tirer");
         fireButton.setOnAction(e -> handleFireButtonClick());
@@ -126,20 +128,23 @@ public class AIGame extends Application implements IGame{
     }
 
     public void handleFireButtonClick() {
-        String targetPosition = targetInput.getText().trim().toUpperCase();
-        if (gameController.isValidTargetPosition(targetPosition)) {
-            String result = gameController.fireAtTargetPosition(targetPosition);
-            resultLabel.setText(result);
+        // l'IA effectue un tir.
+        String targetPosition = aIPlayer.chooseTarget();
+        String result = gameController.fireAtTargetPosition(targetPosition);
+        aIPlayer.rememberShotResult(targetPosition, result);
+        aIPlayer.optimizeShots(targetPosition, gameController.manhattanDistance(targetPosition));
 
-            // Affiche les distances de Manhattan dans distanceTextField
-            String distanceResult = gameController.getDistanceFromShips(targetPosition);
+        // Afficher le résultat du tir dans le label
+        resultLabel.setText(result);
 
-            distanceTextArea.setText(distanceResult);
-            endOfGame(gameController.checkAllShipsSunk());
-        } else {
-            resultLabel.setText("Position cible invalide !");
-        }
+        // Afficher les distances de Manhattan dans distanceTextArea
+        String distanceResult = gameController.getDistanceFromShips(targetPosition);
+        distanceTextArea.setText(distanceResult);
+
+        // Vérifier si tous les bateaux ont été coulés
+        endOfGame(gameController.checkAllShipsSunk());
     }
+
     public void endOfGame(boolean allShipsSunk){
         if(allShipsSunk) {
             EndGame endGame = new EndGame(gameController, this);
@@ -148,14 +153,17 @@ public class AIGame extends Application implements IGame{
     }
 
     public void restartGame() {
-        // Réinitialiser le contrôleur du jeu
+        // Réinitialise le contrôleur du jeu
         gameController.restartGame();
 
-        // Réinitialiser la zone de combat
+        // Réinitialise la zone de combat
         combatZone = new CombatZone(gameController.getGrid());
         gameController.setGridRectangles(combatZone.getGridRectangles());
         zone.getChildren().clear();
         zone.getChildren().add(combatZone.getZone());
+
+        // Réinitialise le contrôleur de l'ia.
+        aIPlayer = new BattleShipAI(gameController);
 
         // Effacer les résultats précédents et les distances de Manhattan
         resultLabel.setText("");

@@ -308,9 +308,9 @@ public class BattleShipGameController {
      * Redémarre le jeu en remettant à zéro les paramètres nécessaires.
      */
     public void restartGame() {
-        // Remettre à zéro les paramètres du jeu, par exemple :
-        grid = new int[gridHeight][gridWidth];; // Réinitialise la grille de jeu
+        grid = new int[gridHeight][gridWidth]; // Réinitialise la grille de jeu
         this.placeShipsRandomly(); // Replace les navires aléatoirement sur la grille
+        score =0;
         // Réinitialiser d'autres paramètres si nécessaire
     }
 
@@ -394,10 +394,15 @@ public class BattleShipGameController {
 
 
     //ACCESSEURS
-
+    /**
+     * Renvoie le score du jeu.
+     *
+     * @return le score
+    */
     public int getScore(){
         return score;
     }
+
     /**
      * Définit les rectangles de la grille du jeu.
      *
