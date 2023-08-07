@@ -5,34 +5,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import classes.BattleShipGameController;
 import classes.CombatZone;
-import javafx.scene.Group;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-
-import java.io.IOException;
-import java.util.List;
 
 public class BattleShipGameControllerTest {
     private BattleShipGameController gameController;
-    private  CombatZone combatZone;
-    private Group zone;
 
     @BeforeEach
     public void setUp() {
         // Instanciez un nouvel objet BattleShipGameController avant chaque test
         gameController = new BattleShipGameController(6, 6, new int[]{3, 2});
-        combatZone = new CombatZone(gameController.getGrid());
-        zone = combatZone.getZone();
+        CombatZone combatZone = new CombatZone(gameController.getGrid());
         gameController.setGridRectangles(combatZone.getGridRectangles());
 
     }
