@@ -15,9 +15,10 @@ public class BattleShipAI {
 
     private Map<Position, String> shotResults;
     /**
-     * Construit un objet BattleShipAI pour représenter l'intelligence artificielle d'un joueur dans le jeu de Bataille Navale.
+     * Constructeur de la classe BattleShipAI qui représente l'intelligence artificielle
+     * qui torpille les bateaux dans le jeu de Bataille Navale.
      *
-     * @param gameController Le contrôleur du jeu de Bataille Navale contenant les informations sur la grille,
+     * @param gameController Le contrôleur contenant les informations sur la grille, le score etc...
      */
     public BattleShipAI(BattleShipGameController gameController) {
         this.gameController = gameController;
@@ -52,7 +53,7 @@ public class BattleShipAI {
     }
 
     /**
-     * Choisi une position cible aléatoire parmi les positions disponibles.
+     * Choisit une position cible aléatoire parmi les positions disponibles.
      * Si la liste des positions potentielles (potentialTargets) est vide, la méthode sélectionne une
      * position cible parmi toutes les positions non encore ciblées dans la grille (targetGrid).
      * Sinon, elle choisit une position cible parmi les positions potentielles.

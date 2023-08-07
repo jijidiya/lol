@@ -15,32 +15,36 @@ import java.io.IOException;
 
 public class BattleShipGameController {
     private int score = 0;
+    private int shipsCounter = 0;
     private int gridWidth = 10; // Valeur par défaut pour la largeur de la grille
     private int gridHeight = 10; // Valeur par défaut pour la hauteur de la grille
+    private boolean isVertical;
     private int[] shipLengths = {5, 4, 3, 3, 2};
 
     private  int[][] grid; // La grille du jeu
     private Rectangle[][] gridRectangles; // Les rectangles de la grille
     private Random random;
-    private String[] shipsName= {"Mazono","Black Pearl", "Sunny", "Vogue Merry", "Jolly Roger", "Oxford"};
+    private String[] shipsName= {"Mazono","Black Pearl", "Sunny", "Vogue Merry", "Jolly Roger", "Oxford",
+                                "Hollandais volant", "Arcadia", "Psychoroïde","Queen Anne's Revenge"};
     // Liste de listes pour stocker les positions occupées par chaque bateau de la flotte
     private List<List<Integer>> shipsPositions = new ArrayList<>();
 
     //CONSTRUCTEUR
     /**
-     * Construit un objet BattleShipGameController et initialise la grille, le générateur de nombres
-     * aléatoires et valeurs de vérités et les listes de positions pour chaque bateau.
+     * Constructeur de la classe BattleShipGameController.
+     * Initialise la grille, le générateur de nombres aléatoires et
+     * valeurs de vérités et les listes de positions pour chaque bateau.
      */
     public BattleShipGameController() {
         grid = new int[gridWidth][gridHeight]; // Crée une grille de jeu vide
-        random = new Random(); // Initialise le générateur de nombres aléatoires et valeurs de vérités
+        random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
         }
     }
     /**
      * Constructeur de la classe BattleShipGameController.
-     * Initialise le jeu de bataille navale avec les dimensions de la grille personnalisées,
+     * Initialise les dimensions personnalisées de la grille,
      * les longueurs de chaque bateau qui indique aussi le nombre de bateaux qu'on aura.
      *
      * @param gridWidth   La largeur de la grille de jeu.
@@ -62,9 +66,13 @@ public class BattleShipGameController {
     //PLACEMENT ALÉATOIRE DES BATEAUX
     /**
      * Place les bateaux aléatoirement sur la grille du jeu.
+     * Cette méthode place les bateaux les uns après les autres, en choisissant
+     * une position et une orientation (verticale ou horizontale) aléatoires
+     * pour chaque bateau, puis en vérifiant si le placement est valide.
+     * Si le placement est valide, le bateau est placé sur la grille et les positions
+     * qu'il occupe sont enregistrées dans la liste des positions de bateaux.
      */
     public void placeShipsRandomly() {
-        int cpt = 0;
         for (int shipLength : shipLengths) {
             boolean isPlaced = false;
             while (!isPlaced) {
@@ -76,12 +84,16 @@ public class BattleShipGameController {
                     // Enregistre les positions occupées par le bateau dans la liste correspondante
                     for (int i = 0; i < shipLength; i++) {
                         if (isVertical) {
-                            shipsPositions.get(cpt).add((row + i) * gridWidth + col);
+                            // Calcul des positions verticales du bateau
+                            // Enregistre l'index de la position dans la liste des positions de bateau
+                            shipsPositions.get(shipsCounter).add((row + i) * gridWidth + col);
                         } else {
-                            shipsPositions.get(cpt).add(row * gridWidth + (col + i));
+                            // Calcul des positions horizontales du bateau
+                            // Enregistre l'index de la position dans la liste des positions de bateau
+                            shipsPositions.get(shipsCounter).add(row * gridWidth + (col + i));
                         }
                     }
-                    cpt++;
+                    shipsCounter++;
                     isPlaced = true;
                 }
             }
@@ -103,7 +115,8 @@ public class BattleShipGameController {
                 return false;
             }
             for (int row = startRow; row < startRow + length; row++) {
-                if (grid[row][startCol] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
+                if (grid[row][startCol] != 0) {
+                    // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
             }
@@ -112,7 +125,8 @@ public class BattleShipGameController {
                 return false;
             }
             for (int col = startCol; col < startCol + length; col++) {
-                if (grid[startRow][col] != 0) { // Vérifie si la case est déjà occupée par un autre bateau
+                if (grid[startRow][col] != 0) {
+                    // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
             }
@@ -131,11 +145,13 @@ public class BattleShipGameController {
     public void placeShip(int startRow, int startCol, int length, boolean isVertical) {
         if (isVertical) {
             for (int row = startRow; row < startRow + length; row++) {
-                grid[row][startCol] = length; // Marque la case de la grille avec la longueur du bateau
+                // Marque la case de la grille avec la longueur du bateau
+                grid[row][startCol] = length;
             }
         } else {
             for (int col = startCol; col < startCol + length; col++) {
-                grid[startRow][col] = length; // Marque la case de la grille avec la longueur du bateau
+                // Marque la case de la grille avec la longueur du bateau
+                grid[startRow][col] = length;
             }
         }
     }
@@ -146,6 +162,7 @@ public class BattleShipGameController {
     /**
      * Méthode de gestion pour le clic sur le bouton de tir.
      *
+     * @param targetPosition La position cible du tir au format lettre-numéro.
      * @return Le résultat du tir, qui peut être l'une des valeurs suivantes :
      *           - "touché" si le tir a touché un bateau.
      *           - "Vous avez déjà tiré ici !" si la position cible a déjà été tirée auparavant.
@@ -158,7 +175,9 @@ public class BattleShipGameController {
         try {
             // Vérifier si la position cible est valide (lettre suivie d'un chiffre)
             if (isValidTargetPosition(targetPosition)) {
+                // Incrémenter le score du joueur à chaque tir effectué
                 score++;
+
                 char rowLetter = targetPosition.charAt(0);
                 int row = rowLetter - 'A';
                 int col = Integer.parseInt(targetPosition.substring(1));
@@ -167,8 +186,10 @@ public class BattleShipGameController {
                 if (isInGrid(row, col)) {
                     if (grid[row][col] > 0) {
                         // Le tir a touché un bateau
-                        grid[row][col] = -1; // Marquer le tir comme "touché"
-                        updateGridButton(row, col, Color.RED); // Mettre à jour l'apparence du bouton avec une couleur spécifique
+                        // Marquer le tir comme "touché"
+                        grid[row][col] = -1;
+                        // Mettre à jour l'apparence du bouton avec une couleur spécifique
+                        updateGridButton(row, col, Color.RED);
                         result = "touché";
                     } else if (grid[row][col] == -1) {
                         result ="Vous avez déjà tiré ici !";
@@ -180,15 +201,16 @@ public class BattleShipGameController {
                     }
                     return result;
                 } else {
-                    System.out.println("Position cible en dehors de la grille !");
+                    // La position cible est en dehors de la grille
                     return "Position cible en dehors de la grille !";
                 }
             } else {
-                System.out.println("Position cible invalide !");
+                // La position cible n'est pas au bon format
                 return "Position cible invalide !";
             }
         } catch (NumberFormatException e) {
-            System.out.println("Position cible invalide !");
+            // Si une exception NumberFormatException est levée lors de la conversion de la position cible en entier
+            // cela signifie que la position cible n'est pas au bon format.
             return "Position cible invalide !";
         }
     }
@@ -241,7 +263,7 @@ public class BattleShipGameController {
     /**
      * Calcule les distances de Manhattan entre une position cible et les positions de chaque bateau de la flotte et
      * dans l'éventualité qu'un bateau soit deja coulé, elle renvoie la valeur max des int qui sera ensuite gérée pour
-     * signaler que le bateau est coulé.
+     * signaler que le bateau est coulé et sera ignoré dans getDistanceFromShips().
      *
      * @param targetPosition La position cible sous forme de code lettre-numéro.
      * @return Une liste d'entiers contenant les distances de Manhattan entre la position cible et les bateaux.
@@ -257,14 +279,16 @@ public class BattleShipGameController {
 
         List<Integer> distances = new ArrayList<>();
         for (List<Integer> shipPositions : shipsPositions) {
-            int minDistance = Integer.MAX_VALUE; // Initialise la distance minimale avec une valeur maximale possible
+            // Initialise la distance minimale avec une valeur maximale possible
+            int minDistance = Integer.MAX_VALUE;
             for (int position : shipPositions) {
                 int row = position / gridWidth;
                 int col = position % gridWidth;
                 if(grid[row][col] > 0){
                     int distance = Math.abs(targetRow - row) + Math.abs(targetCol - col);
                     if (distance < minDistance) {
-                        minDistance = distance; // Met à jour la distance minimale si une distance plus petite est trouvée
+                        // Met à jour la distance minimale si une distance plus petite est trouvée
+                        minDistance = distance;
                     }
                 }
             }
@@ -303,7 +327,7 @@ public class BattleShipGameController {
     }
 
 
-    //REDEMARRER LE JEU
+    //REDÉMARRER LE JEU
     /**
      * Redémarre le jeu en remettant à zéro les paramètres nécessaires.
      */
@@ -322,9 +346,11 @@ public class BattleShipGameController {
      * Le fichier doit être au format spécifié dans les consignes du cahier des charges.
      *
      * @param filePath Le chemin vers le fichier texte à charger.
+     * @return Un tableau 2D représentant la grille chargée depuis le fichier.
      * @throws IOException En cas d'erreur lors de la lecture du fichier.
+     * @throws IllegalArgumentException Si le format du fichier n'est pas valide.
      */
-    public int[][] loadGameFromFile(String filePath) throws  IOException{
+    public void  loadGameFromFile(String filePath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             List<String> lines = new ArrayList<>();
             String line;
@@ -338,7 +364,8 @@ public class BattleShipGameController {
                 } else {
                     // Vérifier si la longueur de la ligne est différente de la longueur attendue
                     if (line.length() != colCount) {
-                        throw new IllegalArgumentException("Le format du fichier n'est pas valide. Toutes les lignes doivent avoir la même longueur.");
+                        throw new IllegalArgumentException("Le format du fichier n'est pas valide. " +
+                                "Toutes les lignes doivent avoir la même longueur.");
                     }
                 }
             }
@@ -346,8 +373,10 @@ public class BattleShipGameController {
             int rowCount = lines.size();
 
             // Initialiser le tableau une fois que les dimensions sont connues
-            int[][] grid = new int[rowCount][colCount];
+            grid = new int[rowCount][colCount];
 
+            int cpt = 0;
+            // Remplir le tableau avec les valeurs de la grille à partir du fichier
             for (int row = 0; row < rowCount; row++) {
                 line = lines.get(row);
                 for (int col = 0; col < colCount; col++) {
@@ -355,9 +384,10 @@ public class BattleShipGameController {
                     if (cell == '.') {
                         grid[row][col] = 0; // Case vide
                     } else if (cell == 'X') {
-                        grid[row][col] = 1; // Case occupée par un bateau
+                        grid[row][col] = 1;
                     } else {
-                        throw new IllegalArgumentException("Le format du fichier n'est pas valide. Caractère inconnu : " + cell);
+                        throw new IllegalArgumentException("Le format du fichier n'est pas valide. " +
+                                "Caractère inconnu : " + cell);
                     }
                 }
             }
@@ -365,14 +395,103 @@ public class BattleShipGameController {
             if (rowCount == 0) {
                 throw new IllegalArgumentException("Le fichier est vide. Aucune grille n'a été trouvée.");
             }
-            return grid;
 
             // Utilisez le tableau 'grid' comme vous en avez besoin à partir de maintenant
         } catch (IOException e) {
+            // En cas d'erreur lors de la lecture du fichier, affichez un message d'erreur
+            // et retournez null pour indiquer une erreur de chargement.
             System.err.println("Erreur lors de la lecture du fichier : " + e.getMessage());
-            return null;
+
         }
     }
+
+    /**
+     * Calcule la longueur du bateau à partir de la position donnée dans la grille.
+     * Cette méthode prend en compte la direction du bateau et compte le nombre de cases occupées consécutivement.
+     *
+     * @param row  L'index de la ligne de départ du bateau.
+     * @param col  L'index de la colonne de départ du bateau.
+     * @return La longueur du bateau à partir de la position donnée dans la grille.
+     */
+    private int calculateShipLength(int row, int col) {
+        // Vérifier si la case de départ est déjà occupée par un bateau
+        if (grid[row][col] != 1) {
+            return 0; // Pas de bateau à cette position
+        }
+
+        // Vérifier si le bateau est positionné horizontalement ou verticalement
+        isVertical = false;
+        boolean isHorizontal = false;
+        if (row > 0 && grid[row - 1][col] == 1 && col > 0 && grid[row][col - 1] == 1) {
+            isHorizontal = true;
+            isVertical = true;
+        }else if (row > 0 && grid[row - 1][col] == 1) {
+            isVertical = true;
+        } else if (col > 0 && grid[row][col - 1] == 1) {
+            isHorizontal = true;
+        } else {
+            // Le bateau occupe une seule case, donc sa longueur est de 1.
+            return 1;
+        }
+        // Compter la longueur du bateau dans la direction correspondante
+        int vLength = 0;
+        int hLength = 0;
+        if (isVertical) {
+            while (row < grid.length && grid[row][col] == 1) {
+                vLength++;
+                row++;
+            }
+        }
+        if(isHorizontal) {
+            while (col < grid[0].length && grid[row][col] == 1) {
+                hLength++;
+                col++;
+            }
+        }
+        if(vLength > hLength){
+            isVertical = true;
+            return vLength;
+        }else{
+            isVertical = false;
+            return hLength;
+        }
+    }
+
+    private boolean isOccupied( int row, int col) {
+        // Vérifier si la case est déjà occupée par un autre bateau
+        for (List<Integer> shipPositions : shipsPositions) {
+            for (int position : shipPositions) {
+                int sRow = position / gridWidth;
+                int sCol = position % gridWidth;
+                if(row == sRow && col == sCol){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public void saveShipsPosition(){
+
+        for (int row = 0; row <grid.length; row++){
+            for(int col = 0; col <grid[0].length; col++){
+                if(grid[row][col] == 1){
+                    if(!isOccupied(row, col)){
+                        int shipLength = calculateShipLength(row, col);
+                        for(int i = 0; i < shipLength; i++){
+                            // Calcul des positions du bateau et enregistrement de l'index de la position
+                            if (isVertical) {
+                                shipsPositions.get(shipsCounter).add((row + i) * grid[0].length + col);
+                            } else {
+                                shipsPositions.get(shipsCounter).add(row * grid[0].length + (col + i));
+                            }
+                        }
+                        shipsCounter++;
+                    }
+                }
+            }
+        }
+    }
+
 
 
     // CAREER POUR LA GESTION DES TESTS

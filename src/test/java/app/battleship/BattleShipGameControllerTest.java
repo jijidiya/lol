@@ -1,20 +1,40 @@
+package app.battleship;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 import classes.BattleShipGameController;
+import classes.CombatZone;
+import javafx.scene.Group;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import java.io.IOException;
 import java.util.List;
 
 public class BattleShipGameControllerTest {
     private BattleShipGameController gameController;
+    private  CombatZone combatZone;
+    private Group zone;
 
     @BeforeEach
     public void setUp() {
         // Instanciez un nouvel objet BattleShipGameController avant chaque test
-        gameController = new BattleShipGameController(5, 5, new int[]{3, 2});
+        gameController = new BattleShipGameController(6, 6, new int[]{3, 2});
+        combatZone = new CombatZone(gameController.getGrid());
+        zone = combatZone.getZone();
+        gameController.setGridRectangles(combatZone.getGridRectangles());
+
     }
 
     @Test
@@ -26,7 +46,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(3, 3, 2, true);
 
         // Définissez une position cible pour le test où il y a un bateau (hit)
-        String targetPosition = "0,1";
+        String targetPosition = "A1";
 
         // Appliquez le tir à la position cible
         gameController.fireAtTargetPosition(targetPosition);
@@ -62,7 +82,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(3, 3, 2, true);
 
         // Définissez une position cible en dehors de la grille pour le test
-        String targetPosition = "E5";
+        String targetPosition = "E7";
 
         // Appliquez le tir à la position cible (en dehors de la grille)
         gameController.fireAtTargetPosition(targetPosition);
@@ -113,9 +133,10 @@ public class BattleShipGameControllerTest {
     }
     @Test
     public void testLoadGameFromFile() throws IOException {
-        // Chargez la grille depuis le fichier test_grid.txt
-        String filePath = String.valueOf(getClass().getResource("test_grid"));
+        // Chargez la grille depuis le fichier test.txt
+        String filePath = "D:\\battleship\\src\\test\\resources\\test_grid.txt";
         gameController.loadGameFromFile(filePath);
+        //gameController.saveShipsPosition(grid);
 
         // Vérifiez que la grille est correctement chargée dans le jeu
         assertEquals(-1, gameController.getGridValue(0, 0)); // Case occupée par un bateau
