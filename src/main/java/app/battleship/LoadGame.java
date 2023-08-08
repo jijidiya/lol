@@ -136,11 +136,12 @@ public class LoadGame extends Application implements  IGame{
     public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
-            String result = gameController.fireAtTargetPosition(targetPosition);
-            resultLabel.setText(result);
-
             // Affiche les distances de Manhattan dans distanceTextField
             String distanceResult = gameController.getDistanceFromShips(targetPosition);
+
+            //Procede au tir
+            String result = gameController.fireAtTargetPosition(targetPosition);
+            resultLabel.setText(result);
 
             distanceTextArea.setText(distanceResult);
             endOfGame(gameController.checkAllShipsSunk());

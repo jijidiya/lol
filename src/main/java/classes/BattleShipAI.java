@@ -187,7 +187,7 @@ public class BattleShipAI {
         int minDistance = findMinDistance(manhattanDistance);
         Position targetPosition = convertPosition(targetStringPosition);
 
-        //On vérifie que le jeu n'est pas fini dans un souci de performance
+
         if (minDistance != 0) {
             // Récupère les coordonnées de la position cible
             int targetCol = targetPosition.getCol();
@@ -216,6 +216,9 @@ public class BattleShipAI {
                     }
                 }
             }
+        }else {
+            // cas où on a fait mouche
+            potentialTargets.clear();
         }
     }
 

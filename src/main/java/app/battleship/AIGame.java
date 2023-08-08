@@ -126,10 +126,16 @@ public class AIGame extends Application implements IGame{
         startMenu.start(new Stage());
         backButton.getScene().getWindow().hide();
     }
-
+    @Override
     public void handleFireButtonClick() {
         // l'IA effectue un tir.
         String targetPosition = aIPlayer.chooseTarget();
+
+        // Afficher les distances de Manhattan dans distanceTextArea
+        String distanceResult = gameController.getDistanceFromShips(targetPosition);
+        distanceTextArea.setText(distanceResult);
+
+        //Procède au tir
         String result = gameController.fireAtTargetPosition(targetPosition);
         aIPlayer.rememberShotResult(targetPosition, result);
         aIPlayer.optimizeShots(targetPosition, gameController.manhattanDistance(targetPosition));
@@ -137,9 +143,6 @@ public class AIGame extends Application implements IGame{
         // Afficher le résultat du tir dans le label
         resultLabel.setText(result);
 
-        // Afficher les distances de Manhattan dans distanceTextArea
-        String distanceResult = gameController.getDistanceFromShips(targetPosition);
-        distanceTextArea.setText(distanceResult);
 
         // Vérifier si tous les bateaux ont été coulés
         endOfGame(gameController.checkAllShipsSunk());

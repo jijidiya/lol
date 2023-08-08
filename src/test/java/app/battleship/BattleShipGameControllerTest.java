@@ -67,7 +67,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(3, 3, 2, true);
 
         // Définissez une position cible en dehors de la grille pour le test
-        String targetPosition = "E7";
+        String targetPosition = "7A";
 
         // Appliquez le tir à la position cible (en dehors de la grille)
         gameController.fireAtTargetPosition(targetPosition);

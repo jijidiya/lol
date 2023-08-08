@@ -79,6 +79,7 @@ public class BattleShipGameController {
                 int row = random.nextInt(gridHeight);
                 int col = random.nextInt(gridWidth);
                 boolean isVertical = random.nextBoolean();
+
                 if (canPlaceShip(row, col, shipLength, isVertical)) {
                     placeShip(row, col, shipLength, isVertical);
                     // Enregistre les positions occupées par le bateau dans la liste correspondante
@@ -115,7 +116,7 @@ public class BattleShipGameController {
                 return false;
             }
             for (int row = startRow; row < startRow + length; row++) {
-                if (grid[row][startCol] != 0) {
+                if (grid[row][startCol] != 0 || isAdjacentOccupied(row, startCol)) {
                     // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
@@ -125,7 +126,7 @@ public class BattleShipGameController {
                 return false;
             }
             for (int col = startCol; col < startCol + length; col++) {
-                if (grid[startRow][col] != 0) {
+                if (grid[startRow][col] != 0 || isAdjacentOccupied(startRow, col)) {
                     // Vérifie si la case est déjà occupée par un autre bateau
                     return false;
                 }
@@ -133,6 +134,42 @@ public class BattleShipGameController {
         }
         return true; // Le bateau peut être placé à l'emplacement spécifié
     }
+    /**
+     * Vérifie si une case adjacente à la position spécifiée est occupée par un bateau.
+     *
+     * @param row Ligne de la position pour laquelle on vérifie les cases adjacentes
+     * @param col Colonne de la position pour laquelle on vérifie les cases adjacentes
+     * @return true si une case adjacente est occupée par un bateau, false sinon
+     */
+    private boolean isAdjacentOccupied(int row, int col) {
+        // Vérifie si la liste des positions de bateaux n'est pas vide
+        if (!shipsPositions.isEmpty()) {
+            int dRow;
+            int dCol;
+            // Parcourt chaque bateau dans la liste des positions de bateaux
+            for (List<Integer> shipPositions : shipsPositions) {
+                // Parcourt chaque position occupée par le bateau actuel
+                for (int position : shipPositions) {
+                    // Calcule les lignes et colonnes des autres positions de bateaux
+                    int otherShipsRow = position / gridWidth;
+                    int otherShipsCol = position % gridWidth;
+
+                    // Calcule les différences de distance entre les lignes et les colonnes
+                    dRow = Math.abs(row - otherShipsRow);
+                    dCol = Math.abs(col - otherShipsCol);
+
+                    // Si la distance entre les positions est de 1 case ou moins dans chaque direction,
+                    // alors la case est considérée comme adjacente et occupée
+                    if (dRow <= 1 && dCol <= 1) {
+                        return true; // Case adjacente occupée par un bateau
+                    }
+                }
+            }
+        }
+
+        return false; // Aucune case adjacente n'est occupée par un bateau
+    }
+
 
     /**
      * Place un bateau sur la grille du jeu.
@@ -155,6 +192,10 @@ public class BattleShipGameController {
             }
         }
     }
+
+
+
+
 
 
 
@@ -277,6 +318,11 @@ public class BattleShipGameController {
         int targetRow = targetPosition.charAt(0) - 'A';
         int targetCol = Integer.parseInt(targetPosition.substring(1));
 
+        //Si la cible fait mouche
+        if(grid[targetRow][targetCol] > 0){
+            return null;
+        }
+
         List<Integer> distances = new ArrayList<>();
         for (List<Integer> shipPositions : shipsPositions) {
             // Initialise la distance minimale avec une valeur maximale possible
@@ -313,12 +359,18 @@ public class BattleShipGameController {
         StringBuilder result = new StringBuilder();
         try {
             List<Integer> distances = manhattanDistance(targetPosition);
-            int shipIndex = 0;
-            for (Integer distance : distances) {
-                if (distance != maxInt){
-                    result.append("Distance de ").append(distance).append(" cases du ").append(shipsName[shipIndex]).append("\n");
+            if (distances == null){
+                result.append("vous avez fait mouche \n distance de manhattant : 0");
+                return result.toString();
+            }else{
+                int shipIndex = 0;
+                for (Integer distance : distances) {
+                    if (distance != maxInt){
+                        result.append("Distance de ").append(distance).append(" cases du " +
+                                "").append(shipsName[shipIndex]).append("\n");
+                    }
+                    shipIndex++;
                 }
-                shipIndex++;
             }
         } catch (IllegalArgumentException e) {
             result.append(e.getMessage());
