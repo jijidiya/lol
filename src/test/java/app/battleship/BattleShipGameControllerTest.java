@@ -81,12 +81,16 @@ public class BattleShipGameControllerTest {
     public void testManhattanDistance() {
         // Placez manuellement les bateaux sur la grille pour ce test
         // Bateau 1 (3 cases) : (0,0), (0,1), (0,2)
-        gameController.placeShip(0, 0, 3, false);
+        gameController.placeShip(0, 0, 1, false);
+        gameController.saveShipsPosition(0,0);
         // Bateau 2 (2 cases) : (3,3), (4,3)
-        gameController.placeShip(3, 3, 2, true);
+        gameController.placeShip(5, 5, 1, true);
+        gameController.saveShipsPosition(5,5);
+
+
 
         // Définissez une position cible pour le test
-        String targetPosition = "C2"; // Cible au milieu de la grille
+        String targetPosition = "E0"; // Cible au milieu de la grille
 
         // Obtenez les distances de Manhattan entre la position cible et les positions des bateaux
         List<Integer> distances = gameController.manhattanDistance(targetPosition);
@@ -94,8 +98,8 @@ public class BattleShipGameControllerTest {
         // Vérifiez que les distances calculées sont correctes
         // le bateau le plus proche de la cible est à une distance de 1
         // et le bateau le plus éloigné est à une distance 3
-        assertEquals(1, distances.get(0));
-        assertEquals(3, distances.get(1));
+        assertEquals(4, distances.get(0));
+        assertEquals(6, distances.get(1));
     }
 
 
@@ -105,6 +109,7 @@ public class BattleShipGameControllerTest {
         gameController.placeShip(0, 0, 3, false);
         // Bateau 2 (2 cases) : (3,3), (4,3)
         gameController.placeShip(3, 3, 2, true);
+
 
         // Appliquez des tirs pour couler tous les bateaux
         gameController.fireAtTargetPosition("A0");
@@ -119,16 +124,21 @@ public class BattleShipGameControllerTest {
     @Test
     public void testLoadGameFromFile() throws IOException {
         // Chargez la grille depuis le fichier test.txt
-        String filePath = "D:\\battleship\\src\\test\\resources\\test_grid.txt";
+        String filePath = "\\battleship\\src\\main\\resources\\app\\battleship\\test.txt";
         gameController.loadGameFromFile(filePath);
-        //gameController.saveShipsPosition(grid);
+        gameController.initializeGrid();
+
+
 
         // Vérifiez que la grille est correctement chargée dans le jeu
-        assertEquals(-1, gameController.getGridValue(0, 0)); // Case occupée par un bateau
-        assertEquals(-1, gameController.getGridValue(1, 0)); // Case occupée par un bateau
-        assertEquals(-1, gameController.getGridValue(2, 0)); // Case occupée par un bateau
-        assertEquals(0, gameController.getGridValue(0, 1));  // Case vide
-        assertEquals(0, gameController.getGridValue(1, 1));  // Case vide
+
+        // vide
+        assertEquals(0, gameController.getGridValue(0, 0));
+        assertEquals(0, gameController.getGridValue(4,4));
+
+        // Case occupée
+        assertEquals(1, gameController.getGridValue(0, 1));
+        assertEquals(1, gameController.getGridValue(1,1));
     }
 }
 

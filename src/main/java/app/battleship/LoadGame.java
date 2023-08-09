@@ -41,7 +41,7 @@ public class LoadGame extends Application implements  IGame{
 
         gameController = new BattleShipGameController();
         gameController.loadGameFromFile("\\battleship\\src\\main\\resources\\app\\battleship\\test.txt");
-        //gameController.saveShipsPosition();
+        gameController.initializeGrid();
         combatZone = new CombatZone(gameController.getGrid());
         zone = combatZone.getZone();
         gameController.setGridRectangles(combatZone.getGridRectangles());

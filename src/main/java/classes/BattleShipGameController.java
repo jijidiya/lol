@@ -16,8 +16,8 @@ import java.io.IOException;
 public class BattleShipGameController {
     private int score = 0;
     private int shipsCounter = 0;
-    private int gridWidth = 10; // Valeur par défaut pour la largeur de la grille
-    private int gridHeight = 10; // Valeur par défaut pour la hauteur de la grille
+    private int cols = 10; // Valeur par défaut pour la largeur de la grille
+    private int rows = 10; // Valeur par défaut pour la hauteur de la grille
     private boolean isVertical;
     private int[] shipLengths = {5, 4, 3, 3, 2};
 
@@ -36,7 +36,7 @@ public class BattleShipGameController {
      * valeurs de vérités et les listes de positions pour chaque bateau.
      */
     public BattleShipGameController() {
-        grid = new int[gridWidth][gridHeight]; // Crée une grille de jeu vide
+        grid = new int[cols][rows]; // Crée une grille de jeu vide
         random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
@@ -47,16 +47,16 @@ public class BattleShipGameController {
      * Initialise les dimensions personnalisées de la grille,
      * les longueurs de chaque bateau qui indique aussi le nombre de bateaux qu'on aura.
      *
-     * @param gridWidth   La largeur de la grille de jeu.
-     * @param gridHeight  La hauteur de la grille de jeu.
+     * @param cols   La largeur de la grille de jeu.
+     * @param rows  La hauteur de la grille de jeu.
      * @param shipLengths Un tableau d'entiers représentant les longueurs de chaque bateau.
      *                   La longueur d'un bateau est toujours comprise entre 1 et 6 cases.
      */
-    public BattleShipGameController(int gridWidth, int gridHeight, int[] shipLengths) {
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
+    public BattleShipGameController(int cols, int rows, int[] shipLengths) {
+        this.cols = cols;
+        this.rows = rows;
         this.shipLengths = shipLengths;
-        this.grid = new int[gridHeight][gridWidth];
+        this.grid = new int[rows][cols];
         this.random = new Random();
         for (int shipLength : shipLengths) {
             shipsPositions.add(new ArrayList<>());
@@ -76,8 +76,8 @@ public class BattleShipGameController {
         for (int shipLength : shipLengths) {
             boolean isPlaced = false;
             while (!isPlaced) {
-                int row = random.nextInt(gridHeight);
-                int col = random.nextInt(gridWidth);
+                int row = random.nextInt(rows);
+                int col = random.nextInt(cols);
                 boolean isVertical = random.nextBoolean();
 
                 if (canPlaceShip(row, col, shipLength, isVertical)) {
@@ -87,11 +87,11 @@ public class BattleShipGameController {
                         if (isVertical) {
                             // Calcul des positions verticales du bateau
                             // Enregistre l'index de la position dans la liste des positions de bateau
-                            shipsPositions.get(shipsCounter).add((row + i) * gridWidth + col);
+                            shipsPositions.get(shipsCounter).add((row + i) * cols + col);
                         } else {
                             // Calcul des positions horizontales du bateau
                             // Enregistre l'index de la position dans la liste des positions de bateau
-                            shipsPositions.get(shipsCounter).add(row * gridWidth + (col + i));
+                            shipsPositions.get(shipsCounter).add(row * cols + (col + i));
                         }
                     }
                     shipsCounter++;
@@ -112,7 +112,7 @@ public class BattleShipGameController {
      */
     private boolean canPlaceShip(int startRow, int startCol, int length, boolean isVertical) {
         if (isVertical) {
-            if (startRow + length > gridHeight) {
+            if (startRow + length > rows) {
                 return false;
             }
             for (int row = startRow; row < startRow + length; row++) {
@@ -122,7 +122,7 @@ public class BattleShipGameController {
                 }
             }
         } else {
-            if (startCol + length > gridWidth) {
+            if (startCol + length > cols) {
                 return false;
             }
             for (int col = startCol; col < startCol + length; col++) {
@@ -151,8 +151,8 @@ public class BattleShipGameController {
                 // Parcourt chaque position occupée par le bateau actuel
                 for (int position : shipPositions) {
                     // Calcule les lignes et colonnes des autres positions de bateaux
-                    int otherShipsRow = position / gridWidth;
-                    int otherShipsCol = position % gridWidth;
+                    int otherShipsRow = position / cols;
+                    int otherShipsCol = position % cols;
 
                     // Calcule les différences de distance entre les lignes et les colonnes
                     dRow = Math.abs(row - otherShipsRow);
@@ -169,8 +169,6 @@ public class BattleShipGameController {
 
         return false; // Aucune case adjacente n'est occupée par un bateau
     }
-
-
     /**
      * Place un bateau sur la grille du jeu.
      *
@@ -274,7 +272,7 @@ public class BattleShipGameController {
      */
     private boolean isInGrid(int row, int col) {
         // Vérifier si la ligne et la colonne sont dans la plage valide de la grille.
-        return row >= 0 && row < gridHeight && col >= 0 && col < gridWidth;
+        return row >= 0 && row < rows && col >= 0 && col < cols;
     }
     /**
      * Met à jour l'apparence du bouton de la grille avec une couleur spécifique.
@@ -328,8 +326,8 @@ public class BattleShipGameController {
             // Initialise la distance minimale avec une valeur maximale possible
             int minDistance = Integer.MAX_VALUE;
             for (int position : shipPositions) {
-                int row = position / gridWidth;
-                int col = position % gridWidth;
+                int row = position / cols;
+                int col = position % cols;
                 if(grid[row][col] > 0){
                     int distance = Math.abs(targetRow - row) + Math.abs(targetCol - col);
                     if (distance < minDistance) {
@@ -360,7 +358,7 @@ public class BattleShipGameController {
         try {
             List<Integer> distances = manhattanDistance(targetPosition);
             if (distances == null){
-                result.append("vous avez fait mouche \n distance de manhattant : 0");
+                result.append("vous avez fait mouche \nLa distance de Manhattan : 0");
                 return result.toString();
             }else{
                 int shipIndex = 0;
@@ -384,7 +382,7 @@ public class BattleShipGameController {
      * Redémarre le jeu en remettant à zéro les paramètres nécessaires.
      */
     public void restartGame() {
-        grid = new int[gridHeight][gridWidth]; // Réinitialise la grille de jeu
+        grid = new int[rows][cols]; // Réinitialise la grille de jeu
         this.placeShipsRandomly(); // Replace les navires aléatoirement sur la grille
         score =0;
         // Réinitialiser d'autres paramètres si nécessaire
@@ -423,15 +421,20 @@ public class BattleShipGameController {
             }
 
             int rowCount = lines.size();
+            if (rowCount == 0) {
+                throw new IllegalArgumentException("Le fichier est vide. Aucune grille n'a été trouvée.");
+            }
 
             // Initialiser le tableau une fois que les dimensions sont connues
             grid = new int[rowCount][colCount];
+            rows = rowCount;
+            cols = colCount;
 
             int cpt = 0;
             // Remplir le tableau avec les valeurs de la grille à partir du fichier
-            for (int row = 0; row < rowCount; row++) {
+            for (int row = 0; row < rows; row++) {
                 line = lines.get(row);
-                for (int col = 0; col < colCount; col++) {
+                for (int col = 0; col < cols; col++) {
                     char cell = line.charAt(col);
                     if (cell == '.') {
                         grid[row][col] = 0; // Case vide
@@ -444,17 +447,49 @@ public class BattleShipGameController {
                 }
             }
 
-            if (rowCount == 0) {
-                throw new IllegalArgumentException("Le fichier est vide. Aucune grille n'a été trouvée.");
-            }
-
-            // Utilisez le tableau 'grid' comme vous en avez besoin à partir de maintenant
         } catch (IOException e) {
-            // En cas d'erreur lors de la lecture du fichier, affichez un message d'erreur
-            // et retournez null pour indiquer une erreur de chargement.
             System.err.println("Erreur lors de la lecture du fichier : " + e.getMessage());
-
         }
+    }
+    public void initializeGrid(){
+        for(int row = 0; row< rows -1; row++){
+            for(int col = 0; col< cols -1; col++){
+                if(grid[row][col] >0){
+                    saveShipsPosition(row, col);
+                }
+            }
+        }
+    }
+    public void saveShipsPosition(int row, int col){
+        int shipLength = calculateShipLength(row, col);
+        if(shipLength>0){
+            if (shipsPositions.isEmpty()) {
+                for (int i = 0; i < shipLength; i++) {
+                    if (isVertical) {
+                        // Calcul des positions verticales du bateau
+                        shipsPositions.get(shipsCounter).add((row + i) * cols + col);
+                    } else {
+                        // Calcul des positions horizontales du bateau
+                        shipsPositions.get(shipsCounter).add(row * cols + (col + i));
+                    }
+                }
+                shipsCounter++;
+            }else{
+                if (canSavePosition(row, col, shipLength)){
+                    for (int i = 0; i < shipLength; i++) {
+                        if (isVertical) {
+                            // Calcul des positions verticales du bateau
+                            shipsPositions.get(shipsCounter).add((row + i) * cols + col);
+                        } else {
+                            // Calcul des positions horizontales du bateau
+                            shipsPositions.get(shipsCounter).add(row * cols + (col + i));
+                        }
+                    }
+                    shipsCounter++;
+                }
+            }
+        }
+
     }
 
     /**
@@ -465,83 +500,60 @@ public class BattleShipGameController {
      * @param col  L'index de la colonne de départ du bateau.
      * @return La longueur du bateau à partir de la position donnée dans la grille.
      */
-    private int calculateShipLength(int row, int col) {
+    private int calculateShipLength( int row, int col) {
         // Vérifier si la case de départ est déjà occupée par un bateau
-        if (grid[row][col] != 1) {
+        if (grid[row][col] < 1) {
             return 0; // Pas de bateau à cette position
         }
-
         // Vérifier si le bateau est positionné horizontalement ou verticalement
+        // Compter la longueur du bateau dans la direction correspondante
+        int length = 0;
         isVertical = false;
-        boolean isHorizontal = false;
-        if (row > 0 && grid[row - 1][col] == 1 && col > 0 && grid[row][col - 1] == 1) {
-            isHorizontal = true;
+
+        if (row < rows -1 && grid[row + 1][col] == 1) {
             isVertical = true;
-        }else if (row > 0 && grid[row - 1][col] == 1) {
-            isVertical = true;
-        } else if (col > 0 && grid[row][col - 1] == 1) {
-            isHorizontal = true;
+        } else if (col < cols -1 && grid[row][col + 1] == 1) {
+            // Le bateau est positionné horizontalement
         } else {
             // Le bateau occupe une seule case, donc sa longueur est de 1.
             return 1;
         }
-        // Compter la longueur du bateau dans la direction correspondante
-        int vLength = 0;
-        int hLength = 0;
+
+
         if (isVertical) {
             while (row < grid.length && grid[row][col] == 1) {
-                vLength++;
+                length++;
                 row++;
             }
-        }
-        if(isHorizontal) {
+        } else {
             while (col < grid[0].length && grid[row][col] == 1) {
-                hLength++;
+                length++;
                 col++;
             }
         }
-        if(vLength > hLength){
-            isVertical = true;
-            return vLength;
-        }else{
-            isVertical = false;
-            return hLength;
-        }
+        return length;
     }
-
-    private boolean isOccupied( int row, int col) {
-        // Vérifier si la case est déjà occupée par un autre bateau
+    private boolean canSavePosition(int row, int col, int shipLength){
         for (List<Integer> shipPositions : shipsPositions) {
-            for (int position : shipPositions) {
-                int sRow = position / gridWidth;
-                int sCol = position % gridWidth;
-                if(row == sRow && col == sCol){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public void saveShipsPosition(){
+            for(int i = 0; i<shipLength; i++){
+                for (int position : shipPositions) {
 
-        for (int row = 0; row <grid.length; row++){
-            for(int col = 0; col <grid[0].length; col++){
-                if(grid[row][col] == 1){
-                    if(!isOccupied(row, col)){
-                        int shipLength = calculateShipLength(row, col);
-                        for(int i = 0; i < shipLength; i++){
-                            // Calcul des positions du bateau et enregistrement de l'index de la position
-                            if (isVertical) {
-                                shipsPositions.get(shipsCounter).add((row + i) * grid[0].length + col);
-                            } else {
-                                shipsPositions.get(shipsCounter).add(row * grid[0].length + (col + i));
-                            }
+                    int otherShipsRow = position / cols;
+                    int otherShipsCol = position % cols;
+
+                    if(isVertical){
+                        if (((row+i) - otherShipsRow) ==0 && (col - otherShipsCol) == 0){
+                            return false;
                         }
-                        shipsCounter++;
+                    }else {
+                        if((row - otherShipsRow) == 0 && (((col+i) - otherShipsCol) == 0)){
+                            return false;
+                        }
                     }
                 }
             }
         }
+        return true;
     }
 
 
