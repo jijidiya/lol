@@ -167,6 +167,7 @@ public class CustomGame extends Application implements IGame {
     public void restartGame() {
         // Réinitialiser le contrôleur du jeu
         gameController.restartGame();
+        gameController.placeShipsRandomly();
 
         // Réinitialiser la zone de combat
         combatZone = new CombatZone(gameController.getGrid());

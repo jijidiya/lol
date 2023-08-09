@@ -383,9 +383,8 @@ public class BattleShipGameController {
      */
     public void restartGame() {
         grid = new int[rows][cols]; // Réinitialise la grille de jeu
-        this.placeShipsRandomly(); // Replace les navires aléatoirement sur la grille
+        shipsCounter =0;
         score =0;
-        // Réinitialiser d'autres paramètres si nécessaire
     }
 
 

@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class EndGame extends Application {
     private Stage endGameStage;
     private final BattleShipGameController gameController;
@@ -51,7 +53,13 @@ public class EndGame extends Application {
         mainMenuButton.setStyle("-fx-background-color: #FF5733;");
 
         // Actions des boutons
-        restartButton.setOnAction(e -> handleRestartButtonClick());
+        restartButton.setOnAction(e -> {
+            try {
+                handleRestartButtonClick();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         quitButton.setOnAction(e -> System.exit(0));
         mainMenuButton.setOnAction(e -> mainMenu());
 
@@ -62,7 +70,7 @@ public class EndGame extends Application {
         this.endGameStage.show();
     }
 
-    private void handleRestartButtonClick() {
+    private void handleRestartButtonClick() throws IOException {
         // Appeler la méthode restartGame() du stage précédent pour redémarrer le jeu
         if (previousStage instanceof NormalGame) {
             ((NormalGame) previousStage).restartGame();
@@ -70,6 +78,8 @@ public class EndGame extends Application {
             ((CustomGame) previousStage).restartGame();
         } else if (previousStage instanceof AIGame){
             ((AIGame) previousStage).restartGame();
+        } else if (previousStage instanceof LoadGame) {
+            ((LoadGame) previousStage).restartGame();
         }
 
         // Fermer la fenêtre de fin de jeu

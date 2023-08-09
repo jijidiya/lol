@@ -52,14 +52,22 @@ public class CustomWindow extends Application {
                 }
 
                 int[] shipSizes = new int[numShips];
+                int sumSizes = 0;
                 for (int i = 0; i < numShips; i++) {
                     int size = Integer.parseInt(sizes[i].trim());
                     if (size < 1 || size > 6) {
                         displayErrorMessage("La taille des bateaux doit être comprise entre 1 et 6.");
                         return;
                     }
+                    sumSizes += size;
                     shipSizes[i] = size;
                 }
+                if(sumSizes > (rows*columns)/2){
+                    displayErrorMessage("Vous avez ajouter trop de pieces ! \nVeuillez a ce que la somme des tailles" +
+                            "\n de bateaux valent moins de " +(rows*columns)/2);
+                    return;
+                }
+
 
                 if (columns >= 6 && columns <= 26 && rows >= 6 && rows <= 26) {
                     BattleShipGameController gameController = new BattleShipGameController(columns, rows, shipSizes);
@@ -98,7 +106,7 @@ public class CustomWindow extends Application {
         Button closeButton = new Button("Fermer");
         closeButton.setOnAction(e -> errorStage.close());
         vbox.getChildren().addAll(errorMessage, closeButton);
-        Scene scene = new Scene(vbox, 250, 150);
+        Scene scene = new Scene(vbox, 400, 150);
         errorStage.setScene(scene);
         errorStage.show();
     }

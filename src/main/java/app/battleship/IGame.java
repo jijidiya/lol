@@ -1,6 +1,7 @@
 package app.battleship;
 
 
+import java.io.IOException;
 
 /**
  * Interface définissant les méthodes communes pour les classes de jeu ou le jeu sera joué.
@@ -14,7 +15,7 @@ public interface IGame {
      * Réinitialise le plateau de jeu et les paramètres de la partie.
      * Cette méthode peut être appelée lorsque le joueur souhaite recommencer une partie.
      */
-    void restartGame();
+    void restartGame() throws IOException;
 
     /**
      * Active ou désactive le mode triche du jeu de bataille navale.

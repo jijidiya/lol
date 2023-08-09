@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 
 import javafx.stage.Stage;
 
+import java.io.IOException;
 
 
 public class Controller {
@@ -44,8 +45,10 @@ public class Controller {
 
     // Méthode pour charger une partie existante depuis un fichier
     @FXML
-    private void loadGame() {
-        // À compléter : Afficher la fenêtre de chargement de partie (si nécessaire)
+    private void loadGame() throws IOException {
+        LoadGame loadGame = new LoadGame();
+        loadGame.start(new Stage());
+        newGameButton.getScene().getWindow().hide();
     }
     @FXML
     private void startNewAIGame() throws Exception {

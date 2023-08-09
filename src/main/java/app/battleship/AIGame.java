@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -26,7 +25,6 @@ public class AIGame extends Application implements IGame{
     private BattleShipGameController gameController;
     private BattleShipAI aIPlayer;
     private CombatZone combatZone;
-    private TextField targetInput;
     private TextArea distanceTextArea;
     private Label resultLabel;
     private Label distanceLabel;
@@ -158,6 +156,7 @@ public class AIGame extends Application implements IGame{
     public void restartGame() {
         // Réinitialise le contrôleur du jeu
         gameController.restartGame();
+        gameController.placeShipsRandomly();
 
         // Réinitialise la zone de combat
         combatZone = new CombatZone(gameController.getGrid());

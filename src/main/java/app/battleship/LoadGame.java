@@ -37,7 +37,7 @@ public class LoadGame extends Application implements  IGame{
     private boolean isCheat;
     @Override
     public void start(Stage fifthStage) throws IOException {
-        fifthStage.setTitle("Normal Game");
+        fifthStage.setTitle("Load Game");
 
         gameController = new BattleShipGameController();
         gameController.loadGameFromFile("\\battleship\\src\\main\\resources\\app\\battleship\\test.txt");
@@ -155,9 +155,11 @@ public class LoadGame extends Application implements  IGame{
             endGame.start(new Stage());
         }
     }
-    public void restartGame() {
+    public void restartGame() throws IOException {
         // Réinitialiser le contrôleur du jeu
         gameController.restartGame();
+        gameController.loadGameFromFile("\\battleship\\src\\main\\resources\\app\\battleship\\test.txt");
+        gameController.initializeGrid();
 
         // Réinitialiser la zone de combat
         combatZone = new CombatZone(gameController.getGrid());
