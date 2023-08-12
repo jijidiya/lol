@@ -108,7 +108,7 @@ public class CustomGame extends Application implements IGame {
         distanceTextArea.setMaxHeight(150);
 
 
-        // Crée un VBox pour les deux éléments (distanceLabel et distanceTextArea)
+        // Crée un VBox pour cadrer ensemble distanceLabel et distanceTextArea.
         VBox distanceBox = new VBox(10);
         distanceBox.setTranslateY(200);
         distanceBox.getChildren().addAll(distanceLabel, distanceTextArea);

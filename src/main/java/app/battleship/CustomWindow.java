@@ -8,11 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class CustomWindow extends Application {
+    private Button backButton;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -21,9 +24,27 @@ public class CustomWindow extends Application {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #333333;");
 
+        Image backButtonImage = new Image(getClass().getResource("image/back_button.png").openStream());
+        ImageView backButtonImageView = new ImageView(backButtonImage);
+
+        backButton = new Button();
+        backButton.setGraphic(backButtonImageView);
+        backButton.setOnAction(e -> {
+            try {
+                handleBackButtonClick();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(20));
+
+        vbox.setStyle("-fx-background-color: #EAEAEA;");
+        vbox.setMinSize(300, 450);
+        vbox.setMaxSize(300, 450);
+        vbox.setPrefSize(300, 450);
 
         Label columnLabel = new Label("Nombre de colonnes (entre 6 et 26) :");
         TextField columnInput = new TextField();
@@ -100,10 +121,12 @@ public class CustomWindow extends Application {
         vbox.getChildren().addAll(columnLabel, columnInput, rowLabel, rowInput, numShipsLabel, numShipsInput,
                 shipSizesLabel, shipSizesInput, startButton);
 
-        vbox.setStyle("-fx-background-color: #EAEAEA;");
-        vbox.setMinSize(300, 450);
-        vbox.setMaxSize(300, 450);
-        vbox.setPrefSize(300, 450);
+        // Ajout du bouton dans le coin supérieur gauche du BorderPane
+        BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
+        BorderPane.setMargin(backButton, new Insets(10));
+        backButton.setStyle("-fx-background-color: #333333;");
+        root.setLeft(backButton);
+
 
 
         root.setCenter(vbox);
@@ -126,6 +149,11 @@ public class CustomWindow extends Application {
         Scene scene = new Scene(vbox, 400, 150);
         errorStage.setScene(scene);
         errorStage.show();
+    }
+    public void handleBackButtonClick() throws Exception {
+        BattleShipApp startMenu = new BattleShipApp();
+        startMenu.start(new Stage());
+        backButton.getScene().getWindow().hide();
     }
 
     public static void main(String[] args) {
