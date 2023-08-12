@@ -135,8 +135,8 @@ public class CustomGame extends Application implements IGame {
 
 
     public void handleBackButtonClick() throws Exception {
-        BattleShipApp startMenu = new BattleShipApp();
-        startMenu.start(new Stage());
+        CustomWindow customWindow = new CustomWindow();
+        customWindow.start(new Stage());
         backButton.getScene().getWindow().hide();
     }
 

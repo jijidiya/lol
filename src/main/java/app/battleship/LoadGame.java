@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class LoadGame extends Application implements  IGame{
+    private String filePath;
     private BorderPane root;
     private Group zone;
     private BattleShipGameController gameController;
@@ -35,12 +36,16 @@ public class LoadGame extends Application implements  IGame{
     private Button backButton;
     private Button cheatModeButton;
     private boolean isCheat;
+
+    public LoadGame(String filePath){
+        this.filePath = filePath;
+    }
     @Override
     public void start(Stage fifthStage) throws IOException {
         fifthStage.setTitle("Load Game");
 
         gameController = new BattleShipGameController();
-        gameController.loadGameFromFile("\\battleship\\src\\main\\resources\\app\\battleship\\test.txt");
+        gameController.loadGameFromFile(filePath);
         gameController.initializeGrid();
         combatZone = new CombatZone(gameController.getGrid());
         zone = combatZone.getZone();
@@ -129,9 +134,11 @@ public class LoadGame extends Application implements  IGame{
     }
 
     public void handleBackButtonClick() throws Exception {
-        BattleShipApp startMenu = new BattleShipApp();
-        startMenu.start(new Stage());
+
+        ChoiceLoadGame loadGame = new ChoiceLoadGame();
+        loadGame.start(new Stage());
         backButton.getScene().getWindow().hide();
+
     }
     public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();

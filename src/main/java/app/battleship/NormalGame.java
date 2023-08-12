@@ -138,7 +138,7 @@ public class NormalGame extends Application implements IGame {
             // Affiche les distances de Manhattan dans distanceTextField
             String distanceResult = gameController.getDistanceFromShips(targetPosition);
 
-            //Procede au tir
+            //Procède au tir
             String result = gameController.fireAtTargetPosition(targetPosition);
             resultLabel.setText(result);
 

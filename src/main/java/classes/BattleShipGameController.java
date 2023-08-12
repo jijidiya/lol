@@ -25,7 +25,8 @@ public class BattleShipGameController {
     private Rectangle[][] gridRectangles; // Les rectangles de la grille
     private Random random;
     private String[] shipsName= {"Mazono","Black Pearl", "Sunny", "Vogue Merry", "Jolly Roger", "Oxford",
-                                "Hollandais volant", "Arcadia", "Psychoroïde","Queen Anne's Revenge"};
+                                "Hollandais volant", "Arcadia", "Psychoroïde","Queen Anne's Revenge",
+                                "Santa Maria", "Club Med II", "Flying Cloud", "Bélem", "Vespucci"};
     // Liste de listes pour stocker les positions occupées par chaque bateau de la flotte
     private List<List<Integer>> shipsPositions = new ArrayList<>();
 
@@ -228,14 +229,14 @@ public class BattleShipGameController {
                         // Marquer le tir comme "touché"
                         grid[row][col] = -1;
                         // Mettre à jour l'apparence du bouton avec une couleur spécifique
-                        updateGridButton(row, col, Color.RED);
+                        updateGridCell(row, col, Color.RED);
                         result = "touché";
                     } else if (grid[row][col] == -1) {
                         result ="Vous avez déjà tiré ici !";
                     } else {
                         // Le tir est dans l'eau (aucun bateau n'a été touché)
                         grid[row][col] = -1; // Marquer le tir comme "dans l'eau"
-                        updateGridButton(row, col, Color.BLUE);
+                        updateGridCell(row, col, Color.BLUE);
                         result = "Plouf!!";
                     }
                     return result;
@@ -277,7 +278,7 @@ public class BattleShipGameController {
     /**
      * Met à jour l'apparence du bouton de la grille avec une couleur spécifique.
      */
-    private void updateGridButton(int row, int col, Color color) {
+    private void updateGridCell(int row, int col, Color color) {
         Rectangle rectangle = gridRectangles[row][col];
         rectangle.setFill(color);
     }
@@ -474,6 +475,11 @@ public class BattleShipGameController {
                 }
                 shipsCounter++;
             }else{
+                if(shipsCounter == shipsPositions.size()){
+                    // pour que shipsPositions s'adaptent au nombre porgressivement
+                    // au nomre de bateau
+                    shipsPositions.add(new ArrayList<>());
+                }
                 if (canSavePosition(row, col, shipLength)){
                     for (int i = 0; i < shipLength; i++) {
                         if (isVertical) {

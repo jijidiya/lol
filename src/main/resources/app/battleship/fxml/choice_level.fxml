@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.battleship.ChoiceLevelController" stylesheets="@css/styles.css">
+    <top>
+        <Label text="Bataille Navale" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Arial" size="36.0" />
+            </font>
+        </Label>
+    </top>
+    <center>
+        <VBox alignment="CENTER" prefHeight="176.0" prefWidth="293.0" spacing="10" style="-fx-background-color: #333333; -fx-border-color: #000000; -fx-border-width: 2;">
+            <Button fx:id="level1" onAction="#choiceLevel1" text="Level1" />
+            <Button fx:id="level2" onAction="#choiceLevel2" text="Level2"/>
+            <Button fx:id="level3" onAction="#choiceLevel3" text="Level3" />
+            <Button fx:id="level4" onAction="#choiceLevel4" text="Level4"/>
+            <Button fx:id="backButton" onAction="#backStartMenu" prefHeight="25.0" prefWidth="90.0" text="Menu Principal" />
+        </VBox>
+    </center>
+    <bottom>
+        <Label text="Cliquez sur l'une des options ci-dessus pour commencer la partie." BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Arial" size="18.0" />
+            </font>
+        </Label>
+    </bottom>
+
+</BorderPane>

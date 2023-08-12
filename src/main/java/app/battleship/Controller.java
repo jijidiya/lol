@@ -25,7 +25,7 @@ public class Controller {
 
 
 
-    // Méthode pour démarrer une nouvelle partie.
+
     @FXML
     private void startNewGame() throws Exception {
         NormalGame normalGame = new NormalGame();
@@ -43,10 +43,9 @@ public class Controller {
 
 
 
-    // Méthode pour charger une partie existante depuis un fichier
     @FXML
     private void loadGame() throws IOException {
-        LoadGame loadGame = new LoadGame();
+        ChoiceLoadGame loadGame = new ChoiceLoadGame();
         loadGame.start(new Stage());
         newGameButton.getScene().getWindow().hide();
     }
@@ -58,7 +57,6 @@ public class Controller {
 
     }
 
-    // Méthode pour quitter l'application
     @FXML
     private void exit(ActionEvent e) {
         System.exit(0);

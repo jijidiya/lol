@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -16,6 +17,9 @@ public class CustomWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Grille Personnalisée");
+
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #333333;");
 
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
@@ -62,7 +66,7 @@ public class CustomWindow extends Application {
                     sumSizes += size;
                     shipSizes[i] = size;
                 }
-                if(sumSizes > (rows*columns)/2){
+                if(sumSizes > (rows*columns/2)+1){
                     displayErrorMessage("Vous avez ajouter trop de pieces ! \nVeuillez a ce que la somme des tailles" +
                             "\n de bateaux valent moins de " +(rows*columns)/2);
                     return;
@@ -91,7 +95,15 @@ public class CustomWindow extends Application {
         vbox.getChildren().addAll(columnLabel, columnInput, rowLabel, rowInput, numShipsLabel, numShipsInput,
                 shipSizesLabel, shipSizesInput, startButton);
 
-        Scene scene = new Scene(vbox, 400, 300);
+        vbox.setStyle("-fx-background-color: #EAEAEA;");
+        vbox.setMinSize(300, 450);
+        vbox.setMaxSize(300, 450);
+        vbox.setPrefSize(300, 450);
+
+
+        root.setCenter(vbox);
+
+        Scene scene = new Scene(root, 1350, 685);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

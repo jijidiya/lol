@@ -124,7 +124,7 @@ public class BattleShipGameControllerTest {
     @Test
     public void testLoadGameFromFile() throws IOException {
         // Chargez la grille depuis le fichier test.txt
-        String filePath = "\\battleship\\src\\main\\resources\\app\\battleship\\test.txt";
+        String filePath = "src/main/resources/app/battleship/test.txt";
         gameController.loadGameFromFile(filePath);
         gameController.initializeGrid();
 

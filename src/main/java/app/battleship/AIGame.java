@@ -84,9 +84,11 @@ public class AIGame extends Application implements IGame{
         resultLabel = new Label("Résultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
         Button fireButton = new Button("Tirer");
+        Button destroyAllShips = new Button("Couler la flotte");
+        destroyAllShips.setOnAction(e -> handleDestroyFleetClick());
         fireButton.setOnAction(e -> handleFireButtonClick());
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(fireButton, resultLabel);
+        vBox.getChildren().addAll(fireButton,destroyAllShips, resultLabel);
 
 
         // Crée un label pour afficher les distances de Manhattan
@@ -96,7 +98,7 @@ public class AIGame extends Application implements IGame{
         distanceTextArea = new TextArea();
         distanceTextArea.setEditable(false);
         distanceTextArea.setWrapText(true); // Permet le retour à la ligne automatique
-        distanceTextArea.setPrefSize(285, 150);
+        distanceTextArea.setPrefSize(285, 180);
         distanceTextArea.setMaxHeight(150);
 
 
@@ -144,6 +146,11 @@ public class AIGame extends Application implements IGame{
 
         // Vérifier si tous les bateaux ont été coulés
         endOfGame(gameController.checkAllShipsSunk());
+    }
+    public void handleDestroyFleetClick(){
+        while(!gameController.checkAllShipsSunk()){
+            handleFireButtonClick();
+        }
     }
 
     public void endOfGame(boolean allShipsSunk){
