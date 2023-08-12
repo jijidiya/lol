@@ -26,7 +26,8 @@ public class BattleShipGameController {
     private Random random;
     private String[] shipsName= {"Mazono","Black Pearl", "Sunny", "Vogue Merry", "Jolly Roger", "Oxford",
                                 "Hollandais volant", "Arcadia", "Psychoroïde","Queen Anne's Revenge",
-                                "Santa Maria", "Club Med II", "Flying Cloud", "Bélem", "Vespucci"};
+                                "Santa Maria", "Club Med II", "Flying Cloud", "Bélem", "Vespucci", "Orange vert",
+                                "Vendetta", "Crusoé", "Friday", "Red Force", "Wednesday"};
     // Liste de listes pour stocker les positions occupées par chaque bateau de la flotte
     private List<List<Integer>> shipsPositions = new ArrayList<>();
 

@@ -5,4 +5,6 @@ module app.battleship {
 
     opens app.battleship to javafx.fxml;
     exports app.battleship;
+    exports classes;
+    opens classes to javafx.fxml;
 }

@@ -50,8 +50,13 @@ public class CustomWindow extends Application {
                 int numShips = Integer.parseInt(numShipsInput.getText());
                 String[] sizes = shipSizesInput.getText().split(",");
 
+                if(numShips > 21){
+                    displayErrorMessage("Le nombre de bateau est limité à 21 :'-(");
+                    return;
+                }
+
                 if (numShips != sizes.length) {
-                    displayErrorMessage("Le nombre de tailles de bateaux doit correspondre au nombre de bateaux saisi.");
+                    displayErrorMessage("Le nombre de tailles de bateaux doit correspondre\n au nombre de bateaux saisi.");
                     return;
                 }
 
@@ -66,7 +71,7 @@ public class CustomWindow extends Application {
                     sumSizes += size;
                     shipSizes[i] = size;
                 }
-                if(sumSizes > (rows*columns/2)+1){
+                if(sumSizes > (rows*columns/2)){
                     displayErrorMessage("Vous avez ajouter trop de pieces ! \nVeuillez a ce que la somme des tailles" +
                             "\n de bateaux valent moins de " +(rows*columns)/2);
                     return;
