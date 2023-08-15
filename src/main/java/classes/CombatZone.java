@@ -40,7 +40,7 @@ public class CombatZone {
      * @param grid  La grille d'entiers représentant les cases de la zone de combat.
      * @return Un groupe contenant les rectangles pour représenter la grille de la zone de combat.
      */
-    public Group generateZone(int[][] grid) {
+    private Group generateZone(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
         int rectangleSize = 35; // Taille des rectangles (35 pixels de longueur et de largeur choix personnel)
@@ -97,7 +97,7 @@ public class CombatZone {
                     // Affiche les bateaux en gris lorsque le mode triche est activé
                     rectangle.setFill(Color.GRAY);
                 } else if( grid[row][col] == -1) {
-                    //ne rien faire TODO: tu dois chercher une manière optimale de l'implémenter
+                    //Ne rien faire
                 }else{
                     rectangle.setFill(Color.LIGHTGRAY); // Sinon, affiche les cases normalement
                 }
