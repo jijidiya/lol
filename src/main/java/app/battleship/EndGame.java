@@ -41,7 +41,7 @@ public class EndGame extends Application {
         Button quitButton = new Button("Quitter");
         Button mainMenuButton = new Button("Retour au Menu Principal");
 
-        // Définir la taille préférée des boutons pour les uniformiser
+
         double buttonWidth = 150;
         double buttonHeight = 30;
         restartButton.setPrefSize(buttonWidth, buttonHeight);
@@ -71,7 +71,7 @@ public class EndGame extends Application {
     }
 
     private void handleRestartButtonClick() throws IOException {
-        // Appeler la méthode restartGame() du stage précédent pour redémarrer le jeu
+
         if (previousStage instanceof NormalGame) {
             ((NormalGame) previousStage).restartGame();
         } else if (previousStage instanceof CustomGame) {
@@ -82,7 +82,6 @@ public class EndGame extends Application {
             ((LoadGame) previousStage).restartGame();
         }
 
-        // Fermer la fenêtre de fin de jeu
         endGameStage.close();
     }
 

@@ -36,6 +36,7 @@ public class BattleShipGameController {
      * Constructeur de la classe BattleShipGameController.
      * Initialise la grille, le générateur de nombres aléatoires et
      * valeurs de vérités et les listes de positions pour chaque bateau.
+     * Ce constructeur ne prend aucun paramètre.
      */
     public BattleShipGameController() {
         grid = new int[cols][rows]; // Crée une grille de jeu vide
@@ -67,8 +68,7 @@ public class BattleShipGameController {
 
     //PLACEMENT ALÉATOIRE DES BATEAUX
     /**
-     * Place les bateaux aléatoirement sur la grille du jeu.
-     * Cette méthode place les bateaux les uns après les autres, en choisissant
+     * Place les bateaux aléatoirement sur la grille du jeu, en choisissant
      * une position et une orientation (verticale ou horizontale) aléatoires
      * pour chaque bateau, puis en vérifiant si le placement est valide.
      * Si le placement est valide, le bateau est placé sur la grille et les positions
@@ -137,7 +137,7 @@ public class BattleShipGameController {
         return true; // Le bateau peut être placé à l'emplacement spécifié
     }
     /**
-     * Vérifie si une case adjacente à la position spécifiée est occupée par un bateau.
+     * Vérifie si les cases adjacentes d'une position spécifiée sont occupées par des bateaux.
      *
      * @param row Ligne de la position pour laquelle on vérifie les cases adjacentes
      * @param col Colonne de la position pour laquelle on vérifie les cases adjacentes
@@ -384,9 +384,12 @@ public class BattleShipGameController {
      * Redémarre le jeu en remettant à zéro les paramètres nécessaires.
      */
     public void restartGame() {
-        grid = new int[rows][cols]; // Réinitialise la grille de jeu
+        grid = new int[rows][cols];
         shipsCounter =0;
         score =0;
+        for(List<Integer> shipsPosition : shipsPositions){
+            shipsPosition.clear();
+        }
     }
 
 

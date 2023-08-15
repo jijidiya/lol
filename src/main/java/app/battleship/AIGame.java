@@ -47,11 +47,9 @@ public class AIGame extends Application implements IGame{
         root = new BorderPane(zone);
         root.setStyle("-fx-background-color: #333333;");
 
-        // Chargement de l'image du bouton retour
+        // Bouton retour
         Image backButtonImage = new Image(Objects.requireNonNull(getClass().getResource("image/back_button.png")).openStream());
         backButtonImageView = new ImageView(backButtonImage);
-
-        // Bouton retour
         backButton = new Button();
         backButton.setGraphic(backButtonImageView);
         backButton.setOnAction(e -> {
@@ -62,18 +60,14 @@ public class AIGame extends Application implements IGame{
             }
         });
         backButton.setStyle("-fx-background-color: #333333;");
-        // Bouton du mode triche
-        cheatModeButton = new Button("Mode Triche");
-        cheatModeButton.setOnAction(e -> activateCheatMode());
-
-
-
-        // Ajout du bouton dans le coin supérieur gauche du BorderPane
         BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
         BorderPane.setMargin(backButton, new Insets(10));
         root.setLeft(backButton);
 
-        // Ajoute le bouton "Activer le mode triche" dans le coin supérieur droit du BorderPane
+
+        // Bouton du mode triche
+        cheatModeButton = new Button("Mode Triche");
+        cheatModeButton.setOnAction(e -> activateCheatMode());
         BorderPane.setAlignment(cheatModeButton, Pos.TOP_RIGHT);
         BorderPane.setMargin(cheatModeButton, new Insets(10));
         root.setTop(cheatModeButton);
@@ -91,28 +85,25 @@ public class AIGame extends Application implements IGame{
         vBox.getChildren().addAll(fireButton,destroyAllShips, resultLabel);
 
 
-        // Crée un label pour afficher les distances de Manhattan
+        // Distances de manhattan
         distanceLabel = new Label("       Les Distances de Manhattan ");
         distanceLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
 
         distanceTextArea = new TextArea();
         distanceTextArea.setEditable(false);
-        distanceTextArea.setWrapText(true); // Permet le retour à la ligne automatique
+        distanceTextArea.setWrapText(true);
         distanceTextArea.setPrefSize(285, 180);
         distanceTextArea.setMaxHeight(150);
 
 
-        // Crée un VBox pour les deux éléments (distanceLabel et distanceTextArea)
+        // VBox pour (distanceLabel et distanceTextArea)
         VBox distanceBox = new VBox(10);
         distanceBox.setTranslateY(200);
         distanceBox.getChildren().addAll(distanceLabel, distanceTextArea);
-
-        // Ajoute le VBox à la zone droite (right) du BorderPane
         root.setRight(distanceBox);
-
-        // Ajoute le HBox à la zone inférieure (bottom) du BorderPane
-        root.setBottom(vBox);
         vBox.setTranslateY(-35);
+        root.setBottom(vBox);
+
 
 
         Scene scene = new Scene(root, 1350, 685);
@@ -128,10 +119,10 @@ public class AIGame extends Application implements IGame{
     }
     @Override
     public void handleFireButtonClick() {
-        // l'IA effectue un tir.
+        // l'IA choisit un emplacement de tir.
         String targetPosition = aIPlayer.chooseTarget();
 
-        // Afficher les distances de Manhattan dans distanceTextArea
+        // Affiche les distances de Manhattan dans distanceTextArea
         String distanceResult = gameController.getDistanceFromShips(targetPosition);
         distanceTextArea.setText(distanceResult);
 
@@ -148,6 +139,7 @@ public class AIGame extends Application implements IGame{
         endOfGame(gameController.checkAllShipsSunk());
     }
     public void handleDestroyFleetClick(){
+        //Methode dont le but est de tirer jusqu'à ce que tous les bateaux soient coulés.
         while(!gameController.checkAllShipsSunk()){
             handleFireButtonClick();
         }
@@ -165,13 +157,15 @@ public class AIGame extends Application implements IGame{
         gameController.restartGame();
         gameController.placeShipsRandomly();
 
+        isCheat = false;
+
         // Réinitialise la zone de combat
         combatZone = new CombatZone(gameController.getGrid());
         gameController.setGridRectangles(combatZone.getGridRectangles());
         zone.getChildren().clear();
         zone.getChildren().add(combatZone.getZone());
 
-        // Réinitialise le contrôleur de l'IA.
+        // Réinitialise l'IA.
         aIPlayer = new BattleShipAI(gameController);
 
         // Effacer les résultats précédents et les distances de Manhattan

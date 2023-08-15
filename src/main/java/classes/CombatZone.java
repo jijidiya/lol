@@ -43,8 +43,9 @@ public class CombatZone {
     public Group generateZone(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
-        int rectangleSize = 35; // Taille des rectangles (50 pixels de longueur et de largeur choix personnel)
+        int rectangleSize = 35; // Taille des rectangles (35 pixels de longueur et de largeur choix personnel)
         if (rows > 10 || cols > 10){
+            // Pour la grille ne dépassent pas la taille de la fenêtre de jeu
             rectangleSize = 20;
         }
 
@@ -56,7 +57,7 @@ public class CombatZone {
                 int y = row * rectangleSize;
 
                 Rectangle rectangle = new Rectangle(x, y, rectangleSize, rectangleSize);
-                rectangle.setFill(Color.LIGHTGRAY); // Couleur du rectangle :-)
+                rectangle.setFill(Color.LIGHTGRAY);
 
                 rectangle.setStroke(Color.BLACK);
                 rectangle.setStrokeWidth(1);
@@ -93,9 +94,10 @@ public class CombatZone {
             for (int col = 0; col < cols; col++) {
                 Rectangle rectangle = gridRectangles[row][col];
                 if (tricheMode && grid[row][col] > 0) {
-                    rectangle.setFill(Color.GRAY); // Affiche les bateaux en gris lorsque le mode triche est activé
+                    // Affiche les bateaux en gris lorsque le mode triche est activé
+                    rectangle.setFill(Color.GRAY);
                 } else if( grid[row][col] == -1) {
-                    //ne rien faire TODO: tu dois chercher une maniere optimale de l'implementer
+                    //ne rien faire TODO: tu dois chercher une manière optimale de l'implémenter
                 }else{
                     rectangle.setFill(Color.LIGHTGRAY); // Sinon, affiche les cases normalement
                 }

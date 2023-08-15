@@ -91,7 +91,7 @@ public class NormalGame extends Application implements IGame {
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        resultLabel = new Label("Resultat du tire");
+        resultLabel = new Label("Résultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(inputBox, resultLabel);
@@ -135,14 +135,13 @@ public class NormalGame extends Application implements IGame {
     public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
-            // Affiche les distances de Manhattan dans distanceTextField
+
             String distanceResult = gameController.getDistanceFromShips(targetPosition);
 
-            //Procède au tir
+
             String result = gameController.fireAtTargetPosition(targetPosition);
             resultLabel.setText(result);
 
-            ;
 
             distanceTextArea.setText(distanceResult);
             endOfGame(gameController.checkAllShipsSunk());
@@ -157,17 +156,15 @@ public class NormalGame extends Application implements IGame {
         }
     }
     public void restartGame() {
-        // Réinitialiser le contrôleur du jeu
         gameController.restartGame();
         gameController.placeShipsRandomly();
 
-        // Réinitialiser la zone de combat
         combatZone = new CombatZone(gameController.getGrid());
         gameController.setGridRectangles(combatZone.getGridRectangles());
         zone.getChildren().clear();
         zone.getChildren().add(combatZone.getZone());
 
-        // Effacer les résultats précédents et les distances de Manhattan
+
         resultLabel.setText("");
         distanceTextArea.setText("");
     }

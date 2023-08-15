@@ -14,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class CustomWindow extends Application {
     private Button backButton;
 
@@ -24,7 +26,7 @@ public class CustomWindow extends Application {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #333333;");
 
-        Image backButtonImage = new Image(getClass().getResource("image/back_button.png").openStream());
+        Image backButtonImage = new Image(Objects.requireNonNull(getClass().getResource("image/back_button.png")).openStream());
         ImageView backButtonImageView = new ImageView(backButtonImage);
 
         backButton = new Button();
@@ -92,9 +94,12 @@ public class CustomWindow extends Application {
                     sumSizes += size;
                     shipSizes[i] = size;
                 }
-                if(sumSizes > (rows*columns/2)){
-                    displayErrorMessage("Vous avez ajouter trop de pieces ! \nVeuillez a ce que la somme des tailles" +
-                            "\n de bateaux valent moins de " +(rows*columns)/2);
+                if(sumSizes >= (rows*columns/2)){
+                    // cela permet d'éviter les bugs dans placeShipRandomly
+
+                    displayErrorMessage("Vous avez ajouter trop de bateaux trop grand ! " +
+                            "\nVeuillez a ce que la somme des tailles" +
+                            "\n des bateaux valent moins de " +(rows*columns)/2);
                     return;
                 }
 
@@ -109,10 +114,11 @@ public class CustomWindow extends Application {
                     }
                     primaryStage.close();
                 } else {
-                    // Afficher un message d'erreur si les dimensions ne sont pas valides
+                    // Affiche un message d'erreur si les dimensions ne sont pas valides
                     displayErrorMessage("Les dimensions de la grille doivent être comprises entre 6 et 26.");
                 }
             }catch (NumberFormatException ex){
+                // Affiche un message d'erreur si le joueur ne remplit pas tous les champs
                 displayErrorMessage("Veuillez remplir tous les champs.");
             }
 
@@ -121,7 +127,7 @@ public class CustomWindow extends Application {
         vbox.getChildren().addAll(columnLabel, columnInput, rowLabel, rowInput, numShipsLabel, numShipsInput,
                 shipSizesLabel, shipSizesInput, startButton);
 
-        // Ajout du bouton dans le coin supérieur gauche du BorderPane
+        //Placement du Bouton retour
         BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
         BorderPane.setMargin(backButton, new Insets(10));
         backButton.setStyle("-fx-background-color: #333333;");
@@ -137,6 +143,8 @@ public class CustomWindow extends Application {
     }
 
     private void displayErrorMessage(String message) {
+        // message d'alerte quand le joueur ne remplit pas le formulaire
+        // comme souhaiter.
         Stage errorStage = new Stage();
         errorStage.setTitle("Erreur");
         VBox vbox = new VBox(10);

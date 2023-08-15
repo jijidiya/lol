@@ -4,7 +4,8 @@ package app.battleship;
 import java.io.IOException;
 
 /**
- * Interface définissant les méthodes communes pour les classes de jeu ou le jeu sera joué.
+ * Interface définissant les méthodes communes pour les classes de jeu ou le jeu sera joué
+ * (ou se trouve la grille du jeu).
  * Les classes implémentant cette interface doivent fournir des implémentations pour ces méthodes.
  */
 public interface IGame {

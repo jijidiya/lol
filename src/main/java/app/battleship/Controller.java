@@ -47,13 +47,13 @@ public class Controller {
     private void loadGame() throws IOException {
         ChoiceLoadGame loadGame = new ChoiceLoadGame();
         loadGame.start(new Stage());
-        newGameButton.getScene().getWindow().hide();
+        loadGameButton.getScene().getWindow().hide();
     }
     @FXML
     private void startNewAIGame() throws Exception {
         AIGame aIGame = new AIGame();
         aIGame.start(new Stage());
-        newGameButton.getScene().getWindow().hide();
+        newAIGameButton.getScene().getWindow().hide();
 
     }
 

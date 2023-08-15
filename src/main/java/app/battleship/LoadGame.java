@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class LoadGame extends Application implements  IGame{
-    private String filePath;
+    private final String filePath;
     private BorderPane root;
     private Group zone;
     private BattleShipGameController gameController;
@@ -97,7 +97,7 @@ public class LoadGame extends Application implements  IGame{
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        resultLabel = new Label("Resultat du tire");
+        resultLabel = new Label("Résultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(inputBox, resultLabel);
@@ -143,10 +143,9 @@ public class LoadGame extends Application implements  IGame{
     public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
-            // Affiche les distances de Manhattan dans distanceTextField
+
             String distanceResult = gameController.getDistanceFromShips(targetPosition);
 
-            //Procede au tir
             String result = gameController.fireAtTargetPosition(targetPosition);
             resultLabel.setText(result);
 

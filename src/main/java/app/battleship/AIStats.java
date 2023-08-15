@@ -1,11 +1,13 @@
-package classes;
+package app.battleship;
 
 
+import classes.BattleShipAI;
+import classes.BattleShipGameController;
+import classes.CombatZone;
 
 public class AIStats {
     public static void main(String[] args){
-        //int numGames = Integer.parseInt(args[0]);
-        int numGames = 9575;
+        int numGames = Integer.parseInt(args[0]);
         int sumScore = 0;
         BattleShipGameController gameController;
         CombatZone combatZone;
@@ -21,10 +23,10 @@ public class AIStats {
             aIPlayer = new BattleShipAI(gameController);
             boolean allShipsSunk = false;
             while(!allShipsSunk){
-                // l'IA effectue un tir.
+
                 String targetPosition = aIPlayer.chooseTarget();
 
-                //Procède au tir
+
                 String result = gameController.fireAtTargetPosition(targetPosition);
                 aIPlayer.rememberShotResult(targetPosition, result);
                 aIPlayer.optimizeShots(targetPosition, gameController.manhattanDistance(targetPosition));
@@ -40,9 +42,9 @@ public class AIStats {
 
 
 
-        double averageTurns = (double) sumScore / numGames;
+        double averageScore = (double) sumScore / numGames;
 
         System.out.println("Nombre total de coups effectués : " + sumScore);
-        System.out.println("Moyenne de coups par partie : " + averageTurns);
+        System.out.println("Moyenne de coups par partie : " + averageScore);
     }
 }

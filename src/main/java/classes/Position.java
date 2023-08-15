@@ -4,11 +4,12 @@ package classes;
 import java.util.Objects;
 
 /**
- * Classe qui représente les @targetPosition qui seront sauvegardées
+ * Classe qui représente les @targetPosition qui seront sauvegardées et
+ * permet des manipulations plus simples des positions dans la classe BattleShipAi.
  */
 public class Position {
-    private final int row; // Numéro de ligne
-    private final int col; // Numéro de colonne
+    private final int row;
+    private final int col;
 
     /**
      * Constructeur de la classe Position.

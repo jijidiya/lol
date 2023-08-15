@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
+import java.util.Objects;
 
 
 public class CustomGame extends Application implements IGame {
@@ -50,11 +50,9 @@ public class CustomGame extends Application implements IGame {
         root = new BorderPane(zone);
         root.setStyle("-fx-background-color: #333333;");
 
-        // Chargement de l'image du bouton retour
-        Image backButtonImage = new Image(getClass().getResource("image/back_button.png").openStream());
-        backButtonImageView = new ImageView(backButtonImage);
-
         // Bouton retour
+        Image backButtonImage = new Image(Objects.requireNonNull(getClass().getResource("image/back_button.png")).openStream());
+        backButtonImageView = new ImageView(backButtonImage);
         backButton = new Button();
         backButton.setGraphic(backButtonImageView);
         backButton.setOnAction(e -> {
@@ -65,16 +63,13 @@ public class CustomGame extends Application implements IGame {
             }
         });
         backButton.setStyle("-fx-background-color: #333333;");
-        // Bouton du mode triche
-        cheatModeButton = new Button("Mode Triche");
-        cheatModeButton.setOnAction(e -> activateCheatMode());
-
-        // Ajout du bouton dans le coin supérieur gauche du BorderPane
         BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
         BorderPane.setMargin(backButton, new Insets(10));
         root.setLeft(backButton);
 
-        // Ajoute le bouton "Activer le mode triche" dans le coin supérieur droit du BorderPane
+        // Bouton du mode triche
+        cheatModeButton = new Button("Mode Triche");
+        cheatModeButton.setOnAction(e -> activateCheatMode());
         BorderPane.setAlignment(cheatModeButton, Pos.TOP_RIGHT);
         BorderPane.setMargin(cheatModeButton, new Insets(10));
         root.setTop(cheatModeButton);
@@ -91,35 +86,27 @@ public class CustomGame extends Application implements IGame {
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(10));
-        resultLabel = new Label("Resultat du tire");
+        resultLabel = new Label("Résultat du tire");
         resultLabel.setStyle("-fx-text-fill: #FFFFFF;");
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(inputBox, resultLabel);
+        root.setBottom(vBox);
 
 
-        // Crée un label pour afficher les distances de Manhattan
+
+        //Affiche les distances de Manhattan
         distanceLabel = new Label("       Les Distances de Manhattan ");
         distanceLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
 
         distanceTextArea = new TextArea();
         distanceTextArea.setEditable(false);
-        distanceTextArea.setWrapText(true); // Permet le retour à la ligne automatique
+        distanceTextArea.setWrapText(true);
         distanceTextArea.setPrefSize(285, 150);
         distanceTextArea.setMaxHeight(150);
-
-
-        // Crée un VBox pour cadrer ensemble distanceLabel et distanceTextArea.
         VBox distanceBox = new VBox(10);
         distanceBox.setTranslateY(200);
         distanceBox.getChildren().addAll(distanceLabel, distanceTextArea);
-
-        // Ajoute distanceBox à la zone droite (right) du BorderPane
         root.setRight(distanceBox);
-
-
-        // Ajoute le vBox à la zone inférieure (bottom) du BorderPane
-        root.setBottom(inputBox);
-        vBox.setTranslateY(-25);
 
 
 
@@ -143,7 +130,7 @@ public class CustomGame extends Application implements IGame {
     public void handleFireButtonClick() {
         String targetPosition = targetInput.getText().trim().toUpperCase();
         if (gameController.isValidTargetPosition(targetPosition)) {
-            // Affiche les distances de Manhattan dans distanceTextField
+
             String distanceResult = gameController.getDistanceFromShips(targetPosition);
 
             //Procède au tir
@@ -168,6 +155,7 @@ public class CustomGame extends Application implements IGame {
         // Réinitialiser le contrôleur du jeu
         gameController.restartGame();
         gameController.placeShipsRandomly();
+        isCheat = false;
 
         // Réinitialiser la zone de combat
         combatZone = new CombatZone(gameController.getGrid());
@@ -175,7 +163,6 @@ public class CustomGame extends Application implements IGame {
         zone.getChildren().clear();
         zone.getChildren().add(combatZone.getZone());
 
-        // Effacer les résultats précédents et les distances de Manhattan
         resultLabel.setText("");
         distanceTextArea.setText("");
     }
