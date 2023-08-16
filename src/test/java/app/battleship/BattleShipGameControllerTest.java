@@ -129,9 +129,6 @@ public class BattleShipGameControllerTest {
         gameController.initializeGrid();
 
 
-
-        // Vérifiez que la grille est correctement chargée dans le jeu
-
         // vide
         assertEquals(0, gameController.getGridValue(0, 0));
         assertEquals(0, gameController.getGridValue(4,4));
