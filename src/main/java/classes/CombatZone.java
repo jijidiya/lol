@@ -4,6 +4,10 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * La classe CombatZone représente la zone de jeu où se déroulent les actions de la bataille navale.
+ * Elle génère l'interface graphique pour afficher la grille, le mode triche et les bateaux.
+ */
 public class CombatZone {
     private int[][] grid;
     private Group zone;

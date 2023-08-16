@@ -106,7 +106,7 @@ public class AIGame extends Application implements IGame{
 
 
 
-        Scene scene = new Scene(root, 1350, 685);
+        Scene scene = new Scene(root, 1280, 685);
         fourthStage.setScene(scene);
         fourthStage.show();
 

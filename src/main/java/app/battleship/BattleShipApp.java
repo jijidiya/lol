@@ -16,7 +16,7 @@ public class BattleShipApp extends Application {
         // Charger le fichier FXML
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/main.fxml")));
 
-        Scene scene = new Scene(root, 1350, 685);
+        Scene scene = new Scene(root, 1280, 685);
         primaryStage.setScene(scene);
         primaryStage.show();
 

@@ -110,7 +110,7 @@ public class CustomGame extends Application implements IGame {
 
 
 
-        Scene scene = new Scene(root, 1350, 685);
+        Scene scene = new Scene(root, 1280, 685);
         primaryStage.setScene(scene);
         primaryStage.show();
 

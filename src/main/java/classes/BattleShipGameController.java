@@ -12,7 +12,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
+/**
+ *  La classe BattleShipGameController gère la logique du jeu de bataille navale, y compris
+ *  la configuration de la grille, le placement des bateaux, les tirs et la vérification de
+ *  l'état du jeu
+ */
 public class BattleShipGameController {
     private int score = 0;
     private int shipsCounter = 0;

@@ -137,7 +137,7 @@ public class CustomWindow extends Application {
 
         root.setCenter(vbox);
 
-        Scene scene = new Scene(root, 1350, 685);
+        Scene scene = new Scene(root, 1280, 685);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

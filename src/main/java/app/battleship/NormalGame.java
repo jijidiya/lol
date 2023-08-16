@@ -121,7 +121,7 @@ public class NormalGame extends Application implements IGame {
         vBox.setTranslateY(-45);
 
 
-        Scene scene = new Scene(root, 1350, 685);
+        Scene scene = new Scene(root, 1280, 685);
         thirdStage.setScene(scene);
         thirdStage.show();
 
@@ -158,6 +158,8 @@ public class NormalGame extends Application implements IGame {
     public void restartGame() {
         gameController.restartGame();
         gameController.placeShipsRandomly();
+
+        isCheat = false;
 
         combatZone = new CombatZone(gameController.getGrid());
         gameController.setGridRectangles(combatZone.getGridRectangles());

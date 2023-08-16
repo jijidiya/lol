@@ -127,7 +127,7 @@ public class LoadGame extends Application implements  IGame{
         vBox.setTranslateY(-45);
 
 
-        Scene scene = new Scene(root, 1350, 685);
+        Scene scene = new Scene(root, 1280, 685);
         fifthStage.setScene(scene);
         fifthStage.show();
 
@@ -162,18 +162,19 @@ public class LoadGame extends Application implements  IGame{
         }
     }
     public void restartGame() throws IOException {
-        // Réinitialiser le contrôleur du jeu
+
         gameController.restartGame();
-        gameController.loadGameFromFile("\\battleship\\src\\main\\resources\\app\\battleship\\test.txt");
+        gameController.loadGameFromFile(filePath);
         gameController.initializeGrid();
 
-        // Réinitialiser la zone de combat
+        isCheat = false;
+
         combatZone = new CombatZone(gameController.getGrid());
         gameController.setGridRectangles(combatZone.getGridRectangles());
         zone.getChildren().clear();
         zone.getChildren().add(combatZone.getZone());
 
-        // Effacer les résultats précédents et les distances de Manhattan
+
         resultLabel.setText("");
         distanceTextArea.setText("");
     }
